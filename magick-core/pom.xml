@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>com.gemserk.games.magick</groupId>
-		<artifactId>magick</artifactId>
+		<artifactId>magick-parent</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>magick-core</artifactId>

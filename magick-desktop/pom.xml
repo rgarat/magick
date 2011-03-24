@@ -52,7 +52,7 @@
 		</dependency>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>libgdx-test-core</artifactId>
+			<artifactId>magick-core</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 

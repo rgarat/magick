@@ -7,9 +7,9 @@ magick-desktop/.classpath
 magick-desktop/.project
 magick-desktop/.settings
 magick-core/target
-magick-core//.classpath
-magick-core//.project
-magick-core//.settings
+magick-core/.classpath
+magick-core/.project
+magick-core/.settings
 magick-android/target
 magick-android/.classpath
 magick-android/.project

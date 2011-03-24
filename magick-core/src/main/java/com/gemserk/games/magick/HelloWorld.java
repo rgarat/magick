@@ -11,7 +11,7 @@
  * governing permissions and limitations under the License.
  */
 
-package com.gemserk.libgdx.test;
+package com.gemserk.games.magick;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
