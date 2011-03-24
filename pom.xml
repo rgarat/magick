@@ -46,6 +46,7 @@
 		<module>magick-core</module>
 		<module>magick-android</module>
 		<module>magick-desktop</module>
+		<module>magick-assets</module>
 	</modules>
 
 	<properties>

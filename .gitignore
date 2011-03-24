@@ -17,3 +17,8 @@ magick-android/.settings
 magick-android/libs/
 magick-android/.externalToolBuilders/
 magick-android/gen/
+magick-assets/target
+magick-assets/.classpath
+magick-assets/.project
+magick-assets/.settings
+
