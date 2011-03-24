@@ -1,12 +1,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.gemserk.libgdxtest</groupId>
-	<artifactId>libgdxtest</artifactId>
+	<groupId>com.gemserk.games.magick</groupId>
+	<artifactId>magick-parent</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
-	<name>Test Parent</name>
-	<description>Test Parent</description>
+	<name>Magick Parent</name>
+	<description>Magick Parent</description>
 
 	<organization>
 		<name>Gemserk</name>
@@ -43,9 +43,9 @@
 
 
 	<modules>
-		<module>libgdx-test-core</module>
-		<module>libgdx-test-android</module>
-		<module>libgdx-test-desktop</module>
+		<module>magick-core</module>
+		<module>magick-android</module>
+		<module>magick-desktop</module>
 	</modules>
 
 	<properties>

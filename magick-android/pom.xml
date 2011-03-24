@@ -2,16 +2,14 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>com.gemserk.libgdxtest</groupId>
-		<artifactId>libgdxtest</artifactId>
+		<groupId>com.gemserk.games.magick</groupId>
+		<artifactId>magick-parent</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<groupId>com.gemserk.libgdxtest</groupId>
-	<artifactId>libgdx-test-android</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<artifactId>magick-android</artifactId>
 	<packaging>apk</packaging>
-	<name>Test Android</name>
-	<description>Test Android</description>
+	<name>Magick Android</name>
+	<description>Magick Android</description>
 
 	<build>
 		<sourceDirectory>src</sourceDirectory>
