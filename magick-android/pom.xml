@@ -43,9 +43,11 @@
 					</sdk>
 					<deleteConflictingFiles>true</deleteConflictingFiles>
 					<extractDuplicates>true</extractDuplicates>
+					<assetsDirectory>../magick-assets/src/main/resources</assetsDirectory>
 				</configuration>
 				<extensions>true</extensions>
 			</plugin>
+
 		</plugins>
 	</build>
 
@@ -89,6 +91,5 @@
 			<artifactId>gdx-backend-android</artifactId>
 			<version>${libgdxversion}</version>
 		</dependency>
-		
 	</dependencies>
 </project>

@@ -8,6 +8,6 @@ import com.gemserk.games.magick.HelloWorld;
 public class HelloWorldAndroid extends AndroidApplication {
 	@Override public void onCreate (Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		initialize(new HelloWorld(), false);		
+		initialize(new HelloWorld(), false);	    
 	}
 }

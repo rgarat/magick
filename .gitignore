@@ -10,6 +10,7 @@ magick-core/target
 magick-core/.classpath
 magick-core/.project
 magick-core/.settings
+#magick-android/assets
 magick-android/target
 magick-android/.classpath
 magick-android/.project
