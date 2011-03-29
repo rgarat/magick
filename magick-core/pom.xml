@@ -37,6 +37,11 @@
 			<artifactId>gdx</artifactId>
 			<version>${libgdxversion}</version>
 		</dependency>
+		<dependency>
+			<groupId>com.gemserk.artemis</groupId>
+			<artifactId>artemis-extra</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 
 </project>

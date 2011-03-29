@@ -14,10 +14,10 @@
 package com.gemserk.games.magick;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
-import com.gemserk.games.magick.HelloWorld;
+import com.gemserk.games.magick.Magick;
 
 public class HelloWorldDesktop {
 	public static void main (String[] argv) {
-		new LwjglApplication(new HelloWorld(), "Hello World", 480, 320, false);
+		new LwjglApplication(new Magick(), "Magick", 480, 320, false);
 	}
 }
