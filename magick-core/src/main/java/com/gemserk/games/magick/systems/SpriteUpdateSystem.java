@@ -1,4 +1,4 @@
-package com.gemserk.games.magick;
+package com.gemserk.games.magick.systems;
 
 import com.artemis.ComponentMapper;
 import com.artemis.Entity;

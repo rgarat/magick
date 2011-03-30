@@ -28,6 +28,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.gemserk.games.magick.components.PositionComponent;
 import com.gemserk.games.magick.components.SpriteComponent;
+import com.gemserk.games.magick.systems.InputSystem;
+import com.gemserk.games.magick.systems.SpriteRenderSystem;
+import com.gemserk.games.magick.systems.SpriteUpdateSystem;
 
 public class Magick implements ApplicationListener {
 	SpriteBatch spriteBatch;
