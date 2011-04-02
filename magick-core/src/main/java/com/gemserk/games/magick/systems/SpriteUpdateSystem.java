@@ -5,6 +5,7 @@ import com.artemis.Entity;
 import com.artemis.EntityProcessingSystem;
 import com.badlogic.gdx.math.Vector2;
 import com.gemserk.artemis.components.ComponentMapperInitHelper;
+import com.gemserk.games.magick.components.LayerComponent;
 import com.gemserk.games.magick.components.PositionComponent;
 import com.gemserk.games.magick.components.SpriteComponent;
 

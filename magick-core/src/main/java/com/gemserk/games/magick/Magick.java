@@ -26,8 +26,10 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.gemserk.games.magick.components.LayerComponent;
 import com.gemserk.games.magick.components.PositionComponent;
 import com.gemserk.games.magick.components.SpriteComponent;
+import com.gemserk.games.magick.systems.CloudSystem;
 import com.gemserk.games.magick.systems.InputSystem;
 import com.gemserk.games.magick.systems.SpriteRenderSystem;
 import com.gemserk.games.magick.systems.SpriteUpdateSystem;
@@ -35,19 +37,16 @@ import com.gemserk.games.magick.systems.SpriteUpdateSystem;
 public class Magick implements ApplicationListener {
 	SpriteBatch spriteBatch;
 	Texture texture;
-	BitmapFont font;
-	Vector2 textPosition = new Vector2(100, 100);
-	Vector2 textDirection = new Vector2(1, 1);
 	private World world;
 	private EntitySystem inputSystem;
 	private EntitySystem spriteUpdateSystem;
 	private EntitySystem spriteRenderSystem;
+	private Entities entities;
+	private EntitySystem cloudSystem;
 
 	@Override
 	public void create() {
-		font = new BitmapFont();
-		font.setColor(Color.RED);
-		texture = new Texture(Gdx.files.internal("data/badlogic.jpg"));
+		texture = new Texture(Gdx.files.internal("data/circle.png"));
 		spriteBatch = new SpriteBatch();
 
 		world = new World();
@@ -55,14 +54,19 @@ public class Magick implements ApplicationListener {
 		SystemManager systemManager = world.getSystemManager();
 		inputSystem = systemManager.setSystem(new InputSystem());
 		spriteUpdateSystem = systemManager.setSystem(new SpriteUpdateSystem());
+		cloudSystem = systemManager.setSystem(new CloudSystem());
 		spriteRenderSystem = systemManager.setSystem(new SpriteRenderSystem(spriteBatch));
 
 		systemManager.initializeAll();
 
-		Entity entity = world.createEntity();
-		entity.addComponent(new PositionComponent(10, 10));
-		entity.addComponent(new SpriteComponent(new Sprite(texture)));
-		entity.refresh();
+		
+		
+		entities = new Entities(world);
+		
+		entities.player();
+		entities.cloud(50, 50);
+		entities.cloud(100,100);
+		entities.cloud(20, 200);
 
 		System.out.println("Arranco");
 	}
@@ -77,9 +81,11 @@ public class Magick implements ApplicationListener {
 
 	private void update(float deltaTime) {
 		world.loopStart();
-		world.setDelta((int)(deltaTime * 1000));
+		int delta = (int)(deltaTime * 1000);
+		world.setDelta(delta);
 		inputSystem.process();
 		spriteUpdateSystem.process();
+		cloudSystem.process();
 
 	}
 
@@ -91,7 +97,6 @@ public class Magick implements ApplicationListener {
 	@Override
 	public void resize(int width, int height) {
 		spriteBatch.getProjectionMatrix().setToOrtho2D(0, 0, width, height);
-		textPosition.set(0, 0);
 	}
 
 	@Override
