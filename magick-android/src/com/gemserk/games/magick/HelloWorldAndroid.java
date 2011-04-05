@@ -7,7 +7,7 @@ import com.gemserk.games.magick.Magick;
 
 public class HelloWorldAndroid extends AndroidApplication {
 	@Override public void onCreate (Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState); 
+		super.onCreate(savedInstanceState);  
 		initialize(new Magick(), false);	    
 	}
 }

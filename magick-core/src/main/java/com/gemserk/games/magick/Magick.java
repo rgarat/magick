@@ -13,26 +13,24 @@
 
 package com.gemserk.games.magick;
 
-import com.artemis.Entity;
 import com.artemis.EntitySystem;
 import com.artemis.SystemManager;
 import com.artemis.World;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
-import com.gemserk.games.magick.components.LayerComponent;
-import com.gemserk.games.magick.components.PositionComponent;
-import com.gemserk.games.magick.components.SpriteComponent;
-import com.gemserk.games.magick.systems.CloudSystem;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.gemserk.games.magick.systems.InputSystem;
+import com.gemserk.games.magick.systems.PhysicsCloudSystem;
+import com.gemserk.games.magick.systems.PhysicsSystem;
+import com.gemserk.games.magick.systems.PhysicsTransformationSystem;
 import com.gemserk.games.magick.systems.SpriteRenderSystem;
 import com.gemserk.games.magick.systems.SpriteUpdateSystem;
+import com.gemserk.games.magick.utils.RandomVector;
 
 public class Magick implements ApplicationListener {
 	SpriteBatch spriteBatch;
@@ -43,30 +41,41 @@ public class Magick implements ApplicationListener {
 	private EntitySystem spriteRenderSystem;
 	private Entities entities;
 	private EntitySystem cloudSystem;
+	private EntitySystem physicsSystem;
+	private EntitySystem physicsTransformationSystem;
+	private Box2DDebugRenderer box2drenderer;
+	private BitmapFont font;
 
 	@Override
 	public void create() {
 		texture = new Texture(Gdx.files.internal("data/circle.png"));
 		spriteBatch = new SpriteBatch();
+		font = new BitmapFont();
 
 		world = new World();
 
 		SystemManager systemManager = world.getSystemManager();
 		inputSystem = systemManager.setSystem(new InputSystem());
 		spriteUpdateSystem = systemManager.setSystem(new SpriteUpdateSystem());
-		cloudSystem = systemManager.setSystem(new CloudSystem());
+		cloudSystem = systemManager.setSystem(new PhysicsCloudSystem());
 		spriteRenderSystem = systemManager.setSystem(new SpriteRenderSystem(spriteBatch));
+		physicsSystem = systemManager.setSystem(new PhysicsSystem());
+		physicsTransformationSystem = systemManager.setSystem(new PhysicsTransformationSystem());
 
 		systemManager.initializeAll();
 
-		
-		
 		entities = new Entities(world);
-		
+
+		int width = Gdx.graphics.getWidth();
+		int height = Gdx.graphics.getHeight();
+
 		entities.player();
-		entities.cloud(50, 50);
-		entities.cloud(100,100);
-		entities.cloud(20, 200);
+		for (int i = 0; i < 20; i++) {
+			Vector2 pos = RandomVector.randomVector(0, 0, width, height);
+			entities.cloud(pos);
+		}
+
+		box2drenderer = new Box2DDebugRenderer();
 
 		System.out.println("Arranco");
 	}
@@ -81,17 +90,23 @@ public class Magick implements ApplicationListener {
 
 	private void update(float deltaTime) {
 		world.loopStart();
-		int delta = (int)(deltaTime * 1000);
+		int delta = (int) (deltaTime * 1000);
 		world.setDelta(delta);
+		physicsSystem.process();
+		physicsTransformationSystem.process();
 		inputSystem.process();
 		spriteUpdateSystem.process();
 		cloudSystem.process();
-
 	}
 
 	private void realRender() {
 		Gdx.graphics.getGL10().glClear(GL10.GL_COLOR_BUFFER_BIT);
 		spriteRenderSystem.process();
+		box2drenderer.render(((PhysicsSystem) physicsSystem).getPhysicsWorld());
+		spriteBatch.begin();
+		font.draw(spriteBatch, "fps:" + Gdx.graphics.getFramesPerSecond(), 0, 20);
+		spriteBatch.end();
+
 	}
 
 	@Override

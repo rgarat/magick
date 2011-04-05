@@ -5,13 +5,14 @@ import com.artemis.Entity;
 import com.artemis.EntitySystem;
 import com.artemis.utils.ImmutableBag;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.Vector2;
 import com.gemserk.artemis.components.ComponentMapperInitHelper;
 import com.gemserk.games.magick.Entities;
-import com.gemserk.games.magick.components.PositionComponent;
+import com.gemserk.games.magick.components.BodyComponent;
 
 public class InputSystem extends EntitySystem {
 
-	ComponentMapper<PositionComponent> positionMapper;
+	ComponentMapper<BodyComponent> bodyMapper;
 
 	public InputSystem() {
 		super();
@@ -29,8 +30,8 @@ public class InputSystem extends EntitySystem {
 		int x = Gdx.input.getX();
 		int y = Gdx.graphics.getHeight() - Gdx.input.getY();
 
-		PositionComponent positionComponent = positionMapper.get(entity);
-		positionComponent.pos.set(x, y);
+		BodyComponent bodyComponent = bodyMapper.get(entity);
+		bodyComponent.body.setTransform(new Vector2(x,y), 0);
 	}
 
 	@Override
