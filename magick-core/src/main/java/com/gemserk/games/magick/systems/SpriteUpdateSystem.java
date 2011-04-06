@@ -3,6 +3,7 @@ package com.gemserk.games.magick.systems;
 import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.EntityProcessingSystem;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.gemserk.artemis.components.ComponentMapperInitHelper;
 import com.gemserk.games.magick.components.LayerComponent;
@@ -24,7 +25,11 @@ public class SpriteUpdateSystem extends EntityProcessingSystem {
 		SpriteComponent spriteComponent = spriteMapper.get(e);
 		
 		Vector2 pos = positionComponent.pos;
-		spriteComponent.sprite.setPosition(pos.x, pos.y);
+		
+		Sprite sprite = spriteComponent.sprite;
+		float width = sprite.getWidth();
+		float height = sprite.getHeight();
+		sprite.setPosition(pos.x - width/2f, pos.y - height/2f);
 	}
 
 	@Override
