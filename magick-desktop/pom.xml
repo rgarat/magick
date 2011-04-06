@@ -22,7 +22,7 @@
 		<finalName>${project.artifactId}-${project.version}</finalName>
 		<appletGameParameter>com.gemserk.games.magick.HelloWorldDesktop</appletGameParameter>
 		<mainClass>${appletGameParameter}</mainClass>
-		<jnlp.applet.mainClass>com.gemserk.componentsengine.slick.applet.OpenALBugFixAppletGameContainer</jnlp.applet.mainClass>
+		<jnlp.applet.mainClass>com.gemserk.games.magick.HelloWorldDesktop</jnlp.applet.mainClass>
 
 		<natives>${basedir}/target/natives/</natives>
 
