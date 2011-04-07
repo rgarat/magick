@@ -44,6 +44,7 @@
 					<zipalign>
 						<verbose>true</verbose>
 					</zipalign>
+					<undeployBeforeDeploy>true</undeployBeforeDeploy>
 					<deleteConflictingFiles>true</deleteConflictingFiles>
 					<extractDuplicates>true</extractDuplicates>
 					<assetsDirectory>../magick-assets/src/main/resources</assetsDirectory>
