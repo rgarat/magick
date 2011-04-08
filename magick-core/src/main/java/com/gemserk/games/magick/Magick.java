@@ -70,7 +70,7 @@ public class Magick implements ApplicationListener {
 		int height = Gdx.graphics.getHeight();
 
 		entities.player();
-		for (int i = 0; i < 20; i++) {
+		for (int i = 0; i < 50; i++) {
 			Vector2 pos = RandomVector.randomVector(0, 0, width, height);
 			entities.cloud(pos);
 		}
@@ -111,6 +111,7 @@ public class Magick implements ApplicationListener {
 
 	@Override
 	public void resize(int width, int height) {
+		Gdx.app.log("Magick", "Screen size: (" + width + ", " + height + ")");
 		spriteBatch.getProjectionMatrix().setToOrtho2D(0, 0, width, height);
 	}
 

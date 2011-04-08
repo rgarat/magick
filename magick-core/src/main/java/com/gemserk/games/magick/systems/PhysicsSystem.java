@@ -13,7 +13,7 @@ public class PhysicsSystem extends EntitySystem {
 	
 	@Override
 	protected void processEntities(ImmutableBag<Entity> entities) {
-		physicsWorld.step(Gdx.app.getGraphics().getDeltaTime(), 3, 3);
+		physicsWorld.step(Gdx.graphics.getDeltaTime(), 3, 3);
 	}
 
 	@Override

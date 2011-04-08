@@ -20,9 +20,9 @@
 
 		<webstartMain>com.gemserk.games.magick.HelloWorldDesktop</webstartMain>
 		<finalName>${project.artifactId}-${project.version}</finalName>
-		<appletGameParameter>com.gemserk.games.magick.HelloWorldDesktop</appletGameParameter>
+		<appletGameParameter>com.gemserk.games.magick.Magick</appletGameParameter>
 		<mainClass>${appletGameParameter}</mainClass>
-		<jnlp.applet.mainClass>com.gemserk.games.magick.HelloWorldDesktop</jnlp.applet.mainClass>
+		<jnlp.applet.mainClass>com.gemserk.games.magick.LwjglAppletApplication</jnlp.applet.mainClass>
 
 		<natives>${basedir}/target/natives/</natives>
 

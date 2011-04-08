@@ -35,6 +35,8 @@ public class PhysicsCloudSystem extends EntitySystem {
 	
 		int delta = world.getDelta();
 		
+		Vector2 force = new Vector2(0,0);
+		
 		for (int i = 0; i < clouds.size(); i++) {
 			Entity entity = clouds.get(i);
 			PositionComponent positionComponent = positionMapper.get(entity);
@@ -42,7 +44,8 @@ public class PhysicsCloudSystem extends EntitySystem {
 			
 			Body body = bodyComponent.body;
 			Vector2 position = body.getPosition();
-			body.applyLinearImpulse(new Vector2(-1000000,0), position);
+			force.set(-100,0);
+			body.applyForce(force, position);
 			if(position.x<0){
 				position.x = Gdx.graphics.getWidth();
 				body.setTransform(position, 0);
