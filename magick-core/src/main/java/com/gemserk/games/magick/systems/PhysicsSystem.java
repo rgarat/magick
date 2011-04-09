@@ -23,7 +23,7 @@ public class PhysicsSystem extends EntitySystem {
 
 	@Override
 	public void initialize() {
-		physicsWorld = new World(new Vector2(0,0), true);
+		physicsWorld = new World(new Vector2(0,-10), true);
 	}
 	
 	public World getPhysicsWorld() {
