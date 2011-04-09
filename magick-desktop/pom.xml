@@ -14,7 +14,7 @@
 	<properties>
 
 		<webstartName>${project.name}</webstartName>
-		<webstartCodebase>http://www.gemserk.com/prototipos/magick-webstart-latest/</webstartCodebase>
+		<webstartCodebase>http://www.gemserk.com/prototipos/magick-latest/</webstartCodebase>
 
 		<!-- finalName>${project.artifactId}-${project.version}</finalName -->
 
