@@ -23,6 +23,7 @@ import com.gemserk.games.magick.systems.PhysicsSystem;
 public class Entities {
 	
 	public static final String GROUP_CLOUDS = "CLOUDS";
+	public static final String GROUP_GROUND = "GROUND";
 	public static final String TAG_PLAYER = "PLAYER";
 	private World world;
 	private Texture texture;
@@ -50,6 +51,7 @@ public class Entities {
 		bodyDef.type = BodyType.DynamicBody;
 		bodyDef.position.set(x,y);
 		Body body = physicsSystem.getPhysicsWorld().createBody(bodyDef);
+		body.setUserData(entity);
 		CircleShape shape = new CircleShape();
 		shape.setPosition(new Vector2(0,0));
 		shape.setRadius(0.16f);
@@ -82,6 +84,7 @@ public class Entities {
 		bodyDef.type = BodyType.StaticBody;
 		bodyDef.position.set(x, y);
 		Body body = physicsSystem.getPhysicsWorld().createBody(bodyDef);
+		body.setUserData(entity);
 		CircleShape shape = new CircleShape();
 		shape.setPosition(new Vector2(0,0));
 		shape.setRadius(0.16f);
@@ -112,11 +115,13 @@ public class Entities {
 		bodyDef.type = BodyType.StaticBody;
 		bodyDef.position.set(500,0.5f);
 		Body body = physicsSystem.getPhysicsWorld().createBody(bodyDef);
+		body.setUserData(entity);
 		PolygonShape shape = new PolygonShape();
 		shape.setAsBox(500,0.5f);
 		body.createFixture(shape, 1);
 		shape.dispose();
 		entity.addComponent(new BodyComponent(body));
+		world.getGroupManager().set(GROUP_GROUND, entity);
 		entity.refresh();
 		return entity;
 	}

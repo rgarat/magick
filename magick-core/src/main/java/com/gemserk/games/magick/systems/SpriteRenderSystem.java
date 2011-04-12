@@ -6,6 +6,7 @@ import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.EntitySystem;
 import com.artemis.utils.ImmutableBag;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
@@ -64,13 +65,16 @@ public class SpriteRenderSystem extends EntitySystem {
 	protected void begin() {
 		super.begin();
 		spriteBatch.begin();
+		
 	}
 
 	@Override
 	protected void end() {
 		super.end();
 		spriteBatch.end();
-		pool.free(layeredSprites);
+		for (int i = 0; i < layeredSprites.size; i++) {
+			pool.free(layeredSprites.items[i]);
+		}
 		layeredSprites.clear();
 	}
 
@@ -86,7 +90,7 @@ public class SpriteRenderSystem extends EntitySystem {
 			SpriteComponent spriteComponent = spriteMapper.get(entity);
 			Sprite sprite = spriteComponent.sprite;
 			LayerComponent layerComponent = layerMapper.get(entity);
-			LayeredSprite layeredSprite = pool.newObject();
+			LayeredSprite layeredSprite = pool.obtain();
 			layeredSprite.sprite = sprite;
 			int layer = 0;
 			if (layerComponent != null)

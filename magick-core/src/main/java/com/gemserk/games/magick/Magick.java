@@ -16,6 +16,8 @@ package com.gemserk.games.magick;
 import com.artemis.EntitySystem;
 import com.artemis.SystemManager;
 import com.artemis.World;
+import com.artemis.utils.Bag;
+import com.artemis.utils.ImmutableBag;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL10;
@@ -27,6 +29,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.gemserk.games.magick.systems.CameraFollowSystem;
+import com.gemserk.games.magick.systems.GroundDetectionSystem;
 import com.gemserk.games.magick.systems.InputSystem;
 import com.gemserk.games.magick.systems.JumpSystem;
 import com.gemserk.games.magick.systems.PhysicsCloudSystem;
@@ -55,6 +58,7 @@ public class Magick implements ApplicationListener {
 	private EntitySystem runningSystem;
 	private EntitySystem cameraFollowSystem;
 	private EntitySystem jumpSystem;
+	private EntitySystem groundDetectionSystem;
 
 	@Override
 	public void create() {
@@ -65,17 +69,25 @@ public class Magick implements ApplicationListener {
 		world = new World();
 
 		SystemManager systemManager = world.getSystemManager();
+		physicsSystem = systemManager.setSystem(new PhysicsSystem());
 		inputSystem = systemManager.setSystem(new InputSystem(camera));
 		spriteUpdateSystem = systemManager.setSystem(new SpriteUpdateSystem());
 		cloudSystem = systemManager.setSystem(new PhysicsCloudSystem());
 		spriteRenderSystem = systemManager.setSystem(new SpriteRenderSystem(spriteBatch));
-		physicsSystem = systemManager.setSystem(new PhysicsSystem());
 		physicsTransformationSystem = systemManager.setSystem(new PhysicsTransformationSystem());
 		runningSystem = systemManager.setSystem(new RunningSystem());
 		cameraFollowSystem = systemManager.setSystem(new CameraFollowSystem(camera));
+		groundDetectionSystem = systemManager.setSystem(new GroundDetectionSystem());
 
 		jumpSystem = systemManager.setSystem(new JumpSystem());
-		systemManager.initializeAll();
+		
+		
+		ImmutableBag<EntitySystem> systems = systemManager.getSystems();
+		for (int i = 0; i < systems.size(); i++) {
+			EntitySystem system = systems.get(i);
+			system.initialize();
+		}
+//		systemManager.initializeAll();
 
 		entities = new Entities(world);
 
@@ -108,6 +120,7 @@ public class Magick implements ApplicationListener {
 		int delta = (int) (deltaTime * 1000);
 		world.setDelta(delta);
 		physicsSystem.process();
+//		groundDetectionSystem.process();
 		runningSystem.process();
 		physicsTransformationSystem.process();
 //		inputSystem.process();
