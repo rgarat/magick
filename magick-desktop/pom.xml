@@ -8,8 +8,8 @@
 	</parent>
 	<artifactId>magick-desktop</artifactId>
 	<packaging>jar</packaging>
-	<name>Test Desktop</name>
-	<description>Test Desktop</description>
+	<name>Magick Desktop</name>
+	<description>Magick Desktop</description>
 
 	<properties>
 
