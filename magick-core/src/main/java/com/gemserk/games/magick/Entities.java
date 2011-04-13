@@ -28,16 +28,19 @@ public class Entities {
 	public static final String GROUP_GROUND = "GROUND";
 	public static final String TAG_PLAYER = "PLAYER";
 	private World world;
-	private Texture texture;
+	private Texture circleTexture;
 	private PhysicsSystem physicsSystem;
-	private Texture textureSquare;
+	private Texture squareTexture;
 	public static  Vector2 playerStartPosition = new Vector2();
 	private Random random = new Random();
+	private Texture colorSquareTexture;
 
 	public Entities(World world){
 		this.world = world;
-		texture = new Texture(Gdx.files.internal("data/circle.png"));
-		textureSquare = new Texture(Gdx.files.internal("data/square.png"));
+		circleTexture = new Texture(Gdx.files.internal("data/circle.png"));
+		
+		squareTexture = new Texture(Gdx.files.internal("data/square.png"));
+		colorSquareTexture = new Texture(Gdx.files.internal("data/colorSquare.png"));
 		physicsSystem = world.getSystemManager().getSystem(PhysicsSystem.class);
 	}
 	
@@ -45,7 +48,7 @@ public class Entities {
 		playerStartPosition.set(x, y);
 		Entity entity = world.createEntity();
 		entity.addComponent(new PositionComponent(x, y));
-		Sprite sprite = new Sprite(texture);
+		Sprite sprite = new Sprite(circleTexture);
 		sprite.setColor(1,1,1,1);
 		sprite.setBounds(0, 0, 0.32f, 0.32f);
 		sprite.setOrigin(0.16f, 0.16f);
@@ -75,7 +78,7 @@ public class Entities {
 	}
 	public Entity cloud(float x, float y){
 		Entity entity = world.createEntity();
-		Sprite sprite = new Sprite(texture);
+		Sprite sprite = new Sprite(circleTexture);
 		
 		sprite.setColor(1,0,0,1);
 		sprite.setSize(0.32f, 0.32f);
@@ -121,9 +124,9 @@ public class Entities {
 	public Entity floor(float topLeftX, float topLeftY, float width){
 		float height = 1;
 		Entity entity = world.createEntity();
-		Sprite sprite = new Sprite(textureSquare);
+		Sprite sprite = new Sprite(colorSquareTexture);
 		
-		sprite.setColor(1,0,0,1);
+//		sprite.setColor(1,0,0,1);
 		sprite.setSize(width, 1f);
 		sprite.setPosition(topLeftX + width/2f, topLeftY - height/2f);
 		sprite.setOrigin(width/2f, height/2f);
