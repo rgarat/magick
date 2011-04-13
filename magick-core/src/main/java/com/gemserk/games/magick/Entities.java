@@ -108,12 +108,13 @@ public class Entities {
 	public void floor(){
 		float x = 0;
 		float y = 1;
-		float width = 3;
+		float width = 5;
+		float heightDiff = 1f;
 		for(int i = 0; i < 60; i++){
-			
-			floor(x,y,width);
+			float currentY = y + heightDiff * random.nextFloat() - heightDiff/2f;
+			floor(x,currentY,width);
 			x+=width;
-			x+=0.2f + random.nextFloat()*1;
+			x+=0.4f + random.nextFloat()*2;
 		}
 	}
 	
