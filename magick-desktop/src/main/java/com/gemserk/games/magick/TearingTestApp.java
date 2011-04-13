@@ -58,7 +58,7 @@ public class TearingTestApp implements ApplicationListener {
 	public void render() {
 		GL10 gl10 = Gdx.graphics.getGL10();
 		gl10.glClear(GL10.GL_COLOR_BUFFER_BIT);
-		camera.position.add(0.15f, 0, 0);
+		camera.position.add(8.15f * Gdx.graphics.getDeltaTime(), 0, 0);
 		camera.update();
 		spriteBatch.setProjectionMatrix(camera.projection);
 		spriteBatch.setTransformMatrix(camera.view);
