@@ -29,6 +29,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.gemserk.games.magick.systems.CameraFollowSystem;
+import com.gemserk.games.magick.systems.DeadDetectionSystem;
 import com.gemserk.games.magick.systems.GroundDetectionSystem;
 import com.gemserk.games.magick.systems.InputSystem;
 import com.gemserk.games.magick.systems.JumpSystem;
@@ -59,6 +60,7 @@ public class Magick implements ApplicationListener {
 	private EntitySystem cameraFollowSystem;
 	private EntitySystem jumpSystem;
 	private EntitySystem groundDetectionSystem;
+	private EntitySystem deadDetectionSystem;
 
 	@Override
 	public void create() {
@@ -78,6 +80,7 @@ public class Magick implements ApplicationListener {
 		runningSystem = systemManager.setSystem(new RunningSystem());
 		cameraFollowSystem = systemManager.setSystem(new CameraFollowSystem(camera));
 		groundDetectionSystem = systemManager.setSystem(new GroundDetectionSystem());
+		deadDetectionSystem = systemManager.setSystem(new DeadDetectionSystem());
 
 		jumpSystem = systemManager.setSystem(new JumpSystem());
 		
@@ -128,6 +131,7 @@ public class Magick implements ApplicationListener {
 //		cloudSystem.process();
 		jumpSystem.process();
 		cameraFollowSystem.process();
+		deadDetectionSystem.process();
 		
 	}
 	

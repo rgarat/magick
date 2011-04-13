@@ -1,5 +1,7 @@
 package com.gemserk.games.magick;
 
+import java.util.Random;
+
 import com.artemis.Entity;
 import com.artemis.World;
 import com.badlogic.gdx.Gdx;
@@ -29,6 +31,8 @@ public class Entities {
 	private Texture texture;
 	private PhysicsSystem physicsSystem;
 	private Texture textureSquare;
+	public static  Vector2 playerStartPosition = new Vector2();
+	private Random random = new Random();
 
 	public Entities(World world){
 		this.world = world;
@@ -38,6 +42,7 @@ public class Entities {
 	}
 	
 	public Entity player(float x, float y){
+		playerStartPosition.set(x, y);
 		Entity entity = world.createEntity();
 		entity.addComponent(new PositionComponent(x, y));
 		Sprite sprite = new Sprite(texture);
@@ -100,24 +105,37 @@ public class Entities {
 		return entity;
 	}
 	
-	public Entity floor(){
+	public void floor(){
+		float x = 0;
+		float y = 1;
+		float width = 3;
+		for(int i = 0; i < 60; i++){
+			
+			floor(x,y,width);
+			x+=width;
+			x+=0.2f + random.nextFloat()*1;
+		}
+	}
+	
+	public Entity floor(float topLeftX, float topLeftY, float width){
+		float height = 1;
 		Entity entity = world.createEntity();
 		Sprite sprite = new Sprite(textureSquare);
 		
 		sprite.setColor(1,0,0,1);
-		sprite.setSize(1000f, 1f);
-		sprite.setPosition(500, 0.5f);
-		sprite.setOrigin(500f, 0.5f);
+		sprite.setSize(width, 1f);
+		sprite.setPosition(topLeftX + width/2f, topLeftY - height/2f);
+		sprite.setOrigin(width/2f, height/2f);
 		entity.addComponent(new SpriteComponent(sprite));
-		entity.addComponent(new PositionComponent(0, 1));
+		entity.addComponent(new PositionComponent(topLeftX + width/2f, topLeftY - height/2f));
 		entity.addComponent(new LayerComponent(-1));
 		BodyDef bodyDef = new BodyDef();
 		bodyDef.type = BodyType.StaticBody;
-		bodyDef.position.set(500,0.5f);
+		bodyDef.position.set(topLeftX + width/2f, topLeftY - height/2f);
 		Body body = physicsSystem.getPhysicsWorld().createBody(bodyDef);
 		body.setUserData(entity);
 		PolygonShape shape = new PolygonShape();
-		shape.setAsBox(500,0.5f);
+		shape.setAsBox(width/2f,height/2f );
 		body.createFixture(shape, 1);
 		shape.dispose();
 		entity.addComponent(new BodyComponent(body));

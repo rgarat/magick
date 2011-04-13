@@ -29,6 +29,8 @@ public class JumpSystem extends EntitySystem {
 		ComponentMapperInitHelper.config(this, world.getEntityManager());
 		world.getSystemManager().getSystem(PhysicsSystem.class).getPhysicsWorld().setContactListener(new ContactListener() {
 
+			Vector2 upNormal = new Vector2(0,1);
+			
 			@Override
 			public void endContact(Contact contact) {
 				if (betweenTagGroup(Entities.TAG_PLAYER, Entities.GROUP_GROUND, contact)) {
@@ -40,7 +42,9 @@ public class JumpSystem extends EntitySystem {
 			@Override
 			public void beginContact(Contact contact) {
 				if (betweenTagGroup(Entities.TAG_PLAYER, Entities.GROUP_GROUND,  contact)) {
-					onGround = true;
+					if(contact.GetWorldManifold().getNormal().dst2(upNormal) < 0.001f){
+						onGround = true;						
+					}
 				}
 
 			}
