@@ -53,9 +53,9 @@
 	</resources>
   
     <applet-desc name="$project.Description" main-class="$mainClass" width="800" height="600"> <!-- JNLPAPPLET -->
-    	<param name="game" value="$project.Properties.appletGameParameter"/> <!-- JNLPAPPLET -->
+    	<param name="game" value="$appletGameParameter"/> <!-- JNLPAPPLET -->
   	</applet-desc> <!-- JNLPAPPLET -->
   	
-  	<application-desc main-class="$project.Properties.webstartMain" /> <!-- JNLPWEBSTART -->  
+  	<application-desc main-class="$webstartMain" /> <!-- JNLPWEBSTART -->  
   
 </jnlp>

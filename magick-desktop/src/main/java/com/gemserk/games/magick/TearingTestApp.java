@@ -43,6 +43,7 @@ public class TearingTestApp implements ApplicationListener {
 			x+=width;
 			x+=0.4f + random.nextFloat()*2;
 		}
+		oldTime = System.nanoTime();
 	}
 	
 	public Sprite createSprite(float topLeftX, float topLeftY, float width){
@@ -59,11 +60,20 @@ public class TearingTestApp implements ApplicationListener {
 
 	}
 
+	long oldTime;
 	@Override
 	public void render() {
+		
+		long nanoTime = System.nanoTime();
+		long lapse = nanoTime - oldTime;
+		oldTime = nanoTime;
+		
+		lapse = (lapse/1000000);
+		
+		
 		GL10 gl10 = Gdx.graphics.getGL10();
 		gl10.glClear(GL10.GL_COLOR_BUFFER_BIT);
-		camera.position.add(8.15f * Gdx.graphics.getDeltaTime(), 0, 0);
+		camera.position.add(0.008f * lapse, 0, 0);
 		camera.update();
 		spriteBatch.setProjectionMatrix(camera.projection);
 		spriteBatch.setTransformMatrix(camera.view);
