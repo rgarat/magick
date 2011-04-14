@@ -3,6 +3,7 @@ package com.gemserk.games.magick;
 import java.util.ArrayList;
 import java.util.Random;
 
+import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;
 
 import com.badlogic.gdx.ApplicationListener;
@@ -26,6 +27,9 @@ public class TearingTestApp implements ApplicationListener {
 	
 	@Override
 	public void create() {
+		
+		Display.setVSyncEnabled(true);
+		
 		texture = new Texture(Gdx.files.internal("data/colorSquare.png"));
 		spriteBatch = new SpriteBatch();
 		font = new BitmapFont();

@@ -18,8 +18,8 @@
 
 		<!-- finalName>${project.artifactId}-${project.version}</finalName -->
 
-<!-- 		<webstartMain>com.gemserk.games.magick.HelloWorldDesktop</webstartMain> -->
-		<webstartMain>com.gemserk.games.magick.TearingTest</webstartMain>
+		<webstartMain>com.gemserk.games.magick.HelloWorldDesktop</webstartMain>
+<!-- 		<webstartMain>com.gemserk.games.magick.TearingTest</webstartMain> -->
 
 		<finalName>${project.artifactId}-${project.version}</finalName>
 		<appletGameParameter>com.gemserk.games.magick.Magick</appletGameParameter>
