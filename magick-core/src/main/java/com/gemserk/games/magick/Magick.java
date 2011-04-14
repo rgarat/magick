@@ -123,16 +123,16 @@ public class Magick implements ApplicationListener {
 		world.loopStart();
 		int delta = (int) (deltaTime * 1000);
 		world.setDelta(delta);
-//		physicsSystem.process();
-////		groundDetectionSystem.process();
-//		runningSystem.process();
-//		physicsTransformationSystem.process();
-////		inputSystem.process();
-//		spriteUpdateSystem.process();
-////		cloudSystem.process();
-//		jumpSystem.process();
+		physicsSystem.process();
+//		groundDetectionSystem.process();
+		runningSystem.process();
+		physicsTransformationSystem.process();
+//		inputSystem.process();
+		spriteUpdateSystem.process();
+//		cloudSystem.process();
+		jumpSystem.process();
 		cameraFollowSystem.process();
-//		deadDetectionSystem.process();
+		deadDetectionSystem.process();
 		
 	}
 	

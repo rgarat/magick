@@ -3,6 +3,8 @@ package com.gemserk.games.magick;
 import java.util.ArrayList;
 import java.util.Random;
 
+import org.lwjgl.opengl.Display;
+
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL10;
@@ -27,7 +29,6 @@ public class TearingTestApp implements ApplicationListener {
 		texture = new Texture(Gdx.files.internal("data/colorSquare.png"));
 		spriteBatch = new SpriteBatch();
 		font = new BitmapFont();
-		
 		float x = 0;
 		float y = 1;
 		float width = 5;
