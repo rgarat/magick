@@ -13,6 +13,8 @@
 
 package com.gemserk.games.magick;
 
+import java.awt.DisplayMode;
+
 import com.artemis.EntitySystem;
 import com.artemis.SystemManager;
 import com.artemis.World;
