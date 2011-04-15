@@ -89,77 +89,78 @@ public class Magick implements ApplicationListener {
 		deadDetectionSystem = systemManager.setSystem(new DeadDetectionSystem());
 		scoreSystem = systemManager.setSystem(new ScoreSystem());
 		scoreRenderSystem = systemManager.setSystem(new ScoreRenderSystem(spriteBatch, font));
-		
-		
 
 		jumpSystem = systemManager.setSystem(new JumpSystem());
-		
-		
+
 		ImmutableBag<EntitySystem> systems = systemManager.getSystems();
 		for (int i = 0; i < systems.size(); i++) {
 			EntitySystem system = systems.get(i);
 			system.initialize();
 		}
-//		systemManager.initializeAll();
+		// systemManager.initializeAll();
 
 		entities = new Entities(world);
 
-		float width = Gdx.graphics.getWidth() *100/ 100f;
+		float width = Gdx.graphics.getWidth() * 100 / 100f;
 		float height = Gdx.graphics.getHeight() / 100f;
 
-		entities.player(1,3);
+		entities.player(1, 3);
 		for (int i = 0; i < 300; i++) {
 			Vector2 pos = RandomVector.randomVector(0, 0, width, height);
 			entities.cloud(pos);
 		}
-		
-		
-		
+
 		entities.floor();
 
 		box2drenderer = new Box2DDebugRenderer();
 
 		System.out.println("Arranco");
-		
+		oldTime = System.nanoTime();
+
 	}
+
+	long oldTime;
 
 	@Override
 	public void render() {
+		long nanoTime = System.nanoTime();
+		double lapse = (int) (nanoTime - oldTime);
+		oldTime = nanoTime;
 
-		update(Gdx.graphics.getDeltaTime());
+		int intLapse = (int)(lapse / 1000000);
+		update(intLapse);
 
 		realRender();
 	}
 
-	private void update(float deltaTime) {
+	private void update(int deltaTime) {
 		world.loopStart();
-		int delta = (int) (deltaTime * 1000);
-		world.setDelta(delta);
+//		int delta = (int) (deltaTime * 1000);
+		world.setDelta(deltaTime);
 		physicsSystem.process();
-//		groundDetectionSystem.process();
+		// groundDetectionSystem.process();
 		runningSystem.process();
 		physicsTransformationSystem.process();
-//		inputSystem.process();
+		// inputSystem.process();
 		spriteUpdateSystem.process();
-//		cloudSystem.process();
+		// cloudSystem.process();
 		jumpSystem.process();
 		cameraFollowSystem.process();
 		scoreSystem.process();
 		deadDetectionSystem.process();
-		
+
 	}
-	
+
 	private void realRender() {
 		GL10 gl10 = Gdx.graphics.getGL10();
 		gl10.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		spriteBatch.setProjectionMatrix(camera.projection);
 		spriteBatch.setTransformMatrix(camera.view);
 
-		
 		spriteRenderSystem.process();
-//		camera.apply(gl10);
-//		box2drenderer.render(((PhysicsSystem) physicsSystem).getPhysicsWorld());
-		
+		// camera.apply(gl10);
+		// box2drenderer.render(((PhysicsSystem) physicsSystem).getPhysicsWorld());
+
 		spriteBatch.setProjectionMatrix(hudCamera.projection);
 		spriteBatch.setTransformMatrix(hudCamera.view);
 		spriteBatch.begin();

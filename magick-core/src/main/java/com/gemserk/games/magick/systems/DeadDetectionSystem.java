@@ -36,6 +36,7 @@ public class DeadDetectionSystem extends EntitySystem {
 		Body body = bodyComponent.body;
 		if(body.getPosition().y < DEADALTITUDE){
 			body.setTransform(Entities.playerStartPosition, 0);
+			body.setLinearVelocity(new Vector2(0,0));
 		}
 	}
 
