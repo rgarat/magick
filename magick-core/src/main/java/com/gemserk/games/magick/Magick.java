@@ -37,6 +37,8 @@ import com.gemserk.games.magick.systems.PhysicsCloudSystem;
 import com.gemserk.games.magick.systems.PhysicsSystem;
 import com.gemserk.games.magick.systems.PhysicsTransformationSystem;
 import com.gemserk.games.magick.systems.RunningSystem;
+import com.gemserk.games.magick.systems.ScoreRenderSystem;
+import com.gemserk.games.magick.systems.ScoreSystem;
 import com.gemserk.games.magick.systems.SpriteRenderSystem;
 import com.gemserk.games.magick.systems.SpriteUpdateSystem;
 import com.gemserk.games.magick.utils.RandomVector;
@@ -61,6 +63,8 @@ public class Magick implements ApplicationListener {
 	private EntitySystem jumpSystem;
 	private EntitySystem groundDetectionSystem;
 	private EntitySystem deadDetectionSystem;
+	private EntitySystem scoreSystem;
+	private EntitySystem scoreRenderSystem;
 
 	@Override
 	public void create() {
@@ -81,6 +85,10 @@ public class Magick implements ApplicationListener {
 		cameraFollowSystem = systemManager.setSystem(new CameraFollowSystem(camera));
 		groundDetectionSystem = systemManager.setSystem(new GroundDetectionSystem());
 		deadDetectionSystem = systemManager.setSystem(new DeadDetectionSystem());
+		scoreSystem = systemManager.setSystem(new ScoreSystem());
+		scoreRenderSystem = systemManager.setSystem(new ScoreRenderSystem(spriteBatch, font));
+		
+		
 
 		jumpSystem = systemManager.setSystem(new JumpSystem());
 		
@@ -102,6 +110,8 @@ public class Magick implements ApplicationListener {
 			Vector2 pos = RandomVector.randomVector(0, 0, width, height);
 			entities.cloud(pos);
 		}
+		
+		
 		
 		entities.floor();
 
@@ -132,6 +142,7 @@ public class Magick implements ApplicationListener {
 //		cloudSystem.process();
 		jumpSystem.process();
 		cameraFollowSystem.process();
+		scoreSystem.process();
 		deadDetectionSystem.process();
 		
 	}
@@ -154,6 +165,7 @@ public class Magick implements ApplicationListener {
 			font.draw(spriteBatch, "fps:" + Gdx.graphics.getFramesPerSecond(), 0, 20f);
 		}
 		spriteBatch.end();
+		scoreRenderSystem.process();
 
 	}
 

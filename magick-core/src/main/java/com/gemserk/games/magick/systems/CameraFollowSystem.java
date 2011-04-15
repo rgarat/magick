@@ -26,7 +26,7 @@ public class CameraFollowSystem extends EntitySystem {
 		PositionComponent positionComponent = positionMapper.get(entity);
 		
 		Vector2 pos = positionComponent.pos;
-		camera.position.set(pos.x + 2, camera.position.y, 0);
+		camera.position.set(pos.x + 3, camera.position.y, 0);
 		camera.update();
 	}
 
