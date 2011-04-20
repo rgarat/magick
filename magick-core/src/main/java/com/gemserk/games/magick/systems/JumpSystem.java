@@ -6,11 +6,13 @@ import com.artemis.EntitySystem;
 import com.artemis.GroupManager;
 import com.artemis.utils.ImmutableBag;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.gemserk.artemis.components.ComponentMapperInitHelper;
+import com.gemserk.games.magick.ButtonBar;
 import com.gemserk.games.magick.Entities;
 import com.gemserk.games.magick.components.BodyComponent;
 
@@ -23,11 +25,13 @@ public class JumpSystem extends EntitySystem {
 	int maxFlyTime = 700;
 	boolean lifted = false;
 	
+	ButtonBar buttonBar = new ButtonBar(2);
+	
 
 	@Override
 	public void initialize() {
 		ComponentMapperInitHelper.config(this, world.getEntityManager());
-		world.getSystemManager().getSystem(PhysicsSystem.class).getPhysicsWorld().setContactListener(new ContactListener() {
+		world.getSystemManager().getSystem(PhysicsSystem.class).addContactListener(new ContactListener() {
 
 			Vector2 upNormal = new Vector2(0,1);
 			
@@ -73,10 +77,11 @@ public class JumpSystem extends EntitySystem {
 	@Override
 	protected void processEntities(ImmutableBag<Entity> entities) {
 		Entity entity = world.getTagManager().getEntity(Entities.TAG_PLAYER);
-		int x = Gdx.input.getX();
-		int y = Gdx.input.getY();
+////		int x = Gdx.input.getX();
+//		int y = Gdx.input.getY();
 
-		if (Gdx.input.isTouched()) {
+//		if (Gdx.input.isTouched()) {
+		if(buttonBar.isPressed(0)){
 			BodyComponent bodyComponent = bodyMapper.get(entity);
 			Body body = bodyComponent.body;
 			if (onGround) {

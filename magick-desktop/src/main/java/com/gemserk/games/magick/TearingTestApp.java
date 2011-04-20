@@ -70,10 +70,12 @@ public class TearingTestApp implements ApplicationListener {
 		
 		lapse = (lapse/1000000);
 		
+//		float deltaMoveGDX = (int)(Gdx.graphics.getDeltaTime()*1000)*0.008f;
+		float deltaMoveGDX = Gdx.graphics.getDeltaTime()*1000*0.008f;
 		
 		GL10 gl10 = Gdx.graphics.getGL10();
 		gl10.glClear(GL10.GL_COLOR_BUFFER_BIT);
-		camera.position.add(0.008f * lapse, 0, 0);
+		camera.position.add(deltaMoveGDX, 0, 0);
 		camera.update();
 		spriteBatch.setProjectionMatrix(camera.projection);
 		spriteBatch.setTransformMatrix(camera.view);

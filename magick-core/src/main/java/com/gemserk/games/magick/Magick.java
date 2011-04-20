@@ -13,12 +13,9 @@
 
 package com.gemserk.games.magick;
 
-import java.awt.DisplayMode;
-
 import com.artemis.EntitySystem;
 import com.artemis.SystemManager;
 import com.artemis.World;
-import com.artemis.utils.Bag;
 import com.artemis.utils.ImmutableBag;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
@@ -26,11 +23,11 @@ import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.gemserk.games.magick.systems.CameraFollowSystem;
+import com.gemserk.games.magick.systems.DashSystem;
 import com.gemserk.games.magick.systems.DeadDetectionSystem;
 import com.gemserk.games.magick.systems.GroundDetectionSystem;
 import com.gemserk.games.magick.systems.InputSystem;
@@ -67,6 +64,7 @@ public class Magick implements ApplicationListener {
 	private EntitySystem deadDetectionSystem;
 	private EntitySystem scoreSystem;
 	private EntitySystem scoreRenderSystem;
+	private EntitySystem dashSystem;
 
 	@Override
 	public void create() {
@@ -91,6 +89,7 @@ public class Magick implements ApplicationListener {
 		scoreRenderSystem = systemManager.setSystem(new ScoreRenderSystem(spriteBatch, font));
 
 		jumpSystem = systemManager.setSystem(new JumpSystem());
+		dashSystem = systemManager.setSystem(new DashSystem());
 
 		ImmutableBag<EntitySystem> systems = systemManager.getSystems();
 		for (int i = 0; i < systems.size(); i++) {
@@ -115,21 +114,13 @@ public class Magick implements ApplicationListener {
 		box2drenderer = new Box2DDebugRenderer();
 
 		System.out.println("Arranco");
-		oldTime = System.nanoTime();
-
 	}
 
 	long oldTime;
 
 	@Override
 	public void render() {
-		long nanoTime = System.nanoTime();
-		double lapse = (int) (nanoTime - oldTime);
-		oldTime = nanoTime;
-
-		int intLapse = (int)(lapse / 1000000);
-		update(intLapse);
-
+		update((int)(Gdx.graphics.getDeltaTime()*1000));
 		realRender();
 	}
 
@@ -145,6 +136,7 @@ public class Magick implements ApplicationListener {
 		spriteUpdateSystem.process();
 		// cloudSystem.process();
 		jumpSystem.process();
+		dashSystem.process();
 		cameraFollowSystem.process();
 		scoreSystem.process();
 		deadDetectionSystem.process();
