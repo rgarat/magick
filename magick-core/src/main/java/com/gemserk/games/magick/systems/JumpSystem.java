@@ -14,6 +14,7 @@ import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.gemserk.artemis.components.ComponentMapperInitHelper;
 import com.gemserk.games.magick.ButtonBar;
 import com.gemserk.games.magick.Entities;
+import com.gemserk.games.magick.GameActions;
 import com.gemserk.games.magick.components.BodyComponent;
 
 public class JumpSystem extends EntitySystem {
@@ -25,8 +26,12 @@ public class JumpSystem extends EntitySystem {
 	int maxFlyTime = 700;
 	boolean lifted = false;
 	
-	ButtonBar buttonBar = new ButtonBar(2);
+	private final GameActions gameActions;
 	
+
+	public JumpSystem(GameActions gameActions) {
+		this.gameActions = gameActions;
+	}
 
 	@Override
 	public void initialize() {
@@ -77,11 +82,7 @@ public class JumpSystem extends EntitySystem {
 	@Override
 	protected void processEntities(ImmutableBag<Entity> entities) {
 		Entity entity = world.getTagManager().getEntity(Entities.TAG_PLAYER);
-////		int x = Gdx.input.getX();
-//		int y = Gdx.input.getY();
-
-//		if (Gdx.input.isTouched()) {
-		if(buttonBar.isPressed(0)){
+		if(gameActions.jump()){
 			BodyComponent bodyComponent = bodyMapper.get(entity);
 			Body body = bodyComponent.body;
 			if (onGround) {

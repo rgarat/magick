@@ -19,6 +19,7 @@ import com.artemis.World;
 import com.artemis.utils.ImmutableBag;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Graphics.GraphicsType;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -55,8 +56,8 @@ public class Magick implements ApplicationListener {
 	private EntitySystem physicsTransformationSystem;
 	private Box2DDebugRenderer box2drenderer;
 	private BitmapFont font;
-	OrthographicCamera camera = new OrthographicCamera(8.00f, 4.80f);
-	OrthographicCamera hudCamera = new OrthographicCamera(800, 400);
+	OrthographicCamera camera;
+	OrthographicCamera hudCamera;
 	private EntitySystem runningSystem;
 	private EntitySystem cameraFollowSystem;
 	private EntitySystem jumpSystem;
@@ -68,11 +69,15 @@ public class Magick implements ApplicationListener {
 
 	@Override
 	public void create() {
+		camera = new OrthographicCamera(8.00f, 4.80f);
+		hudCamera = new OrthographicCamera(800, 400);
 		texture = new Texture(Gdx.files.internal("data/circle.png"));
 		spriteBatch = new SpriteBatch();
 		font = new BitmapFont();
 
 		world = new World();
+		
+		GameActions gameActions = new GameActions();
 
 		SystemManager systemManager = world.getSystemManager();
 		physicsSystem = systemManager.setSystem(new PhysicsSystem());
@@ -88,8 +93,8 @@ public class Magick implements ApplicationListener {
 		scoreSystem = systemManager.setSystem(new ScoreSystem());
 		scoreRenderSystem = systemManager.setSystem(new ScoreRenderSystem(spriteBatch, font));
 
-		jumpSystem = systemManager.setSystem(new JumpSystem());
-		dashSystem = systemManager.setSystem(new DashSystem());
+		jumpSystem = systemManager.setSystem(new JumpSystem(gameActions));
+		dashSystem = systemManager.setSystem(new DashSystem(gameActions));
 
 		ImmutableBag<EntitySystem> systems = systemManager.getSystems();
 		for (int i = 0; i < systems.size(); i++) {

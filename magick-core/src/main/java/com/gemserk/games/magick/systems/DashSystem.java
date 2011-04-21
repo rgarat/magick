@@ -14,12 +14,18 @@ import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.gemserk.artemis.components.ComponentMapperInitHelper;
 import com.gemserk.games.magick.ButtonBar;
 import com.gemserk.games.magick.Entities;
+import com.gemserk.games.magick.GameActions;
 import com.gemserk.games.magick.components.BodyComponent;
 
 public class DashSystem extends EntitySystem {
 
 	ComponentMapper<BodyComponent> bodyMapper;
 	ButtonBar buttonBar = new ButtonBar(2);
+	private final GameActions gameActions;
+
+	public DashSystem(GameActions gameActions) {
+		this.gameActions = gameActions;
+	}
 
 	@Override
 	public void initialize() {
@@ -32,7 +38,7 @@ public class DashSystem extends EntitySystem {
 	protected void processEntities(ImmutableBag<Entity> entities) {
 		Entity entity = world.getTagManager().getEntity(Entities.TAG_PLAYER);
 
-		if (buttonBar.isPressed(1)) {
+		if (gameActions.dash()) {
 			BodyComponent bodyComponent = bodyMapper.get(entity);
 			Body body = bodyComponent.body;
 			negativeGravity.set(0, 0).sub(PhysicsSystem.GRAVITY).mul(body.getMass());
