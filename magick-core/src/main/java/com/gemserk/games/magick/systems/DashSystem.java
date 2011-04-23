@@ -19,9 +19,16 @@ import com.gemserk.games.magick.components.BodyComponent;
 
 public class DashSystem extends EntitySystem {
 
+	static final long DASHTIME = 1000;
+	static final long DASHTIMEOUT = 1000;
+
 	ComponentMapper<BodyComponent> bodyMapper;
 	ButtonBar buttonBar = new ButtonBar(2);
 	private final GameActions gameActions;
+
+	private boolean dashing = false;
+	long dashTimeLeft = 0;
+	long currentDashTimeout = 0;
 
 	public DashSystem(GameActions gameActions) {
 		this.gameActions = gameActions;
@@ -34,19 +41,40 @@ public class DashSystem extends EntitySystem {
 
 	Vector2 negativeGravity = new Vector2();
 
+	Vector2 linearVelocity = new Vector2();
+	float oldLinearX = 0f;
+
 	@Override
 	protected void processEntities(ImmutableBag<Entity> entities) {
 		Entity entity = world.getTagManager().getEntity(Entities.TAG_PLAYER);
+		BodyComponent bodyComponent = bodyMapper.get(entity);
+		Body body = bodyComponent.body;
 
-		if (gameActions.dash()) {
-			BodyComponent bodyComponent = bodyMapper.get(entity);
-			Body body = bodyComponent.body;
+		if (!dashing && canDash() && gameActions.dash()) {
+			dashing = true;
+			dashTimeLeft = DASHTIME;
+			oldLinearX = body.getLinearVelocity().x;
+		} else if (!dashing && !canDash()){
+			currentDashTimeout -= world.getDelta();
+		} else if (dashing) {
 			negativeGravity.set(0, 0).sub(PhysicsSystem.GRAVITY).mul(body.getMass());
 			body.applyForce(negativeGravity, body.getPosition());
+			body.setLinearVelocity(linearVelocity.set(10, 0));
+			dashTimeLeft -= world.getDelta();
+			if (dashTimeLeft < 0) {
+				dashing = false;
+				body.setLinearVelocity(linearVelocity.set(oldLinearX, body.getLinearVelocity().y));
+				currentDashTimeout = DASHTIMEOUT;
+			}
 		}
 
 	}
+	
+	private boolean canDash() {
+		return currentDashTimeout <= 0;
+	}
 
+	
 	@Override
 	protected boolean checkProcessing() {
 		return true;
