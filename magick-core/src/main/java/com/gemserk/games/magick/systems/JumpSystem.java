@@ -5,14 +5,11 @@ import com.artemis.Entity;
 import com.artemis.EntitySystem;
 import com.artemis.GroupManager;
 import com.artemis.utils.ImmutableBag;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.gemserk.artemis.components.ComponentMapperInitHelper;
-import com.gemserk.games.magick.ButtonBar;
 import com.gemserk.games.magick.Entities;
 import com.gemserk.games.magick.GameActions;
 import com.gemserk.games.magick.components.BodyComponent;
@@ -52,7 +49,8 @@ public class JumpSystem extends EntitySystem {
 			public void beginContact(Contact contact) {
 				if (betweenTagGroup(Entities.TAG_PLAYER, Entities.GROUP_GROUND,  contact)) {
 					if(contact.GetWorldManifold().getNormal().dst2(upNormal) < 0.001f){
-						onGround = true;						
+						onGround = true;
+						resetJumps();
 					}
 				}
 
@@ -78,18 +76,24 @@ public class JumpSystem extends EntitySystem {
 	}
 
 	Vector2 force = new Vector2();
-
+	int jumpCount = 0;
+	boolean canDoubleJump = true;
+	
 	@Override
 	protected void processEntities(ImmutableBag<Entity> entities) {
 		Entity entity = world.getTagManager().getEntity(Entities.TAG_PLAYER);
 		if(gameActions.jump()){
 			BodyComponent bodyComponent = bodyMapper.get(entity);
 			Body body = bodyComponent.body;
-			if (onGround) {
+			if ( (jumpCount < 2 && lifted)) {
 				flyTime = maxFlyTime;
 				lifted = false;
-				force.set(0, 0.1f);
+				force.set(0, 0.2f);
+				Vector2 linearVelocity = body.getLinearVelocity();
+				linearVelocity.y = 0;
+				body.setLinearVelocity(linearVelocity);
 				body.applyLinearImpulse(force, body.getPosition());
+				jumpCount +=1;
 			} else {
 				if(!lifted) {
 					flyTime -= world.getDelta();
@@ -101,8 +105,13 @@ public class JumpSystem extends EntitySystem {
 			}
 		} else {
 			lifted = true;
+		
 		}
 
+	}
+	
+	public void resetJumps(){
+		jumpCount = 0;
 	}
 
 	@Override

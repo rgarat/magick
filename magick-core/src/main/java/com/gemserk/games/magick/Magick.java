@@ -77,7 +77,7 @@ public class Magick implements ApplicationListener {
 
 		world = new World();
 		
-		GameActions gameActions = new GameActions();
+		GameActionsFactory gameActions = new GameActionsFactory();
 
 		SystemManager systemManager = world.getSystemManager();
 		physicsSystem = systemManager.setSystem(new PhysicsSystem());
@@ -93,8 +93,8 @@ public class Magick implements ApplicationListener {
 		scoreSystem = systemManager.setSystem(new ScoreSystem());
 		scoreRenderSystem = systemManager.setSystem(new ScoreRenderSystem(spriteBatch, font));
 
-		jumpSystem = systemManager.setSystem(new JumpSystem(gameActions));
-		dashSystem = systemManager.setSystem(new DashSystem(gameActions));
+		jumpSystem = systemManager.setSystem(new JumpSystem(GameActionsFactory.getGameActions()));
+		dashSystem = systemManager.setSystem(new DashSystem(GameActionsFactory.getGameActions()));
 
 		ImmutableBag<EntitySystem> systems = systemManager.getSystems();
 		for (int i = 0; i < systems.size(); i++) {

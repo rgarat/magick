@@ -18,6 +18,7 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.Shape;
 import com.gemserk.games.magick.components.BodyComponent;
 import com.gemserk.games.magick.components.LayerComponent;
+import com.gemserk.games.magick.components.PlayerStatus;
 import com.gemserk.games.magick.components.PositionComponent;
 import com.gemserk.games.magick.components.SpriteComponent;
 import com.gemserk.games.magick.systems.PhysicsSystem;
@@ -54,7 +55,7 @@ public class Entities {
 		sprite.setOrigin(0.16f, 0.16f);
 		entity.addComponent(new SpriteComponent(sprite));
 		entity.addComponent(new LayerComponent(1));
-		
+		entity.addComponent(new PlayerStatus());		
 		BodyDef bodyDef = new BodyDef();
 		bodyDef.type = BodyType.DynamicBody;
 		bodyDef.position.set(x,y);
@@ -117,14 +118,15 @@ public class Entities {
 	
 	public void floor(){
 		float x = 0;
-		float y = 1;
+		float y = 1.5f;
 		float width = 5;
-		float heightDiff = 1f;
+		float heightDiff = 2f;
 		for(int i = 0; i < 60; i++){
 			float currentY = y + heightDiff * random.nextFloat() - heightDiff/2f;
-			floor(x,currentY,width);
-			x+=width;
-			x+=0.4f + random.nextFloat()*2;
+			float currentWidth = width + (8*random.nextFloat() - 4f);
+			floor(x,currentY,currentWidth);
+			x+=currentWidth;
+			x+=4f + random.nextFloat()*8 - 4;
 		}
 	}
 	

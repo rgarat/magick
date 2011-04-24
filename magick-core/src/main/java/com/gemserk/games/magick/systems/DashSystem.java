@@ -3,32 +3,26 @@ package com.gemserk.games.magick.systems;
 import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.EntitySystem;
-import com.artemis.GroupManager;
 import com.artemis.utils.ImmutableBag;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.Contact;
-import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.gemserk.artemis.components.ComponentMapperInitHelper;
-import com.gemserk.games.magick.ButtonBar;
 import com.gemserk.games.magick.Entities;
 import com.gemserk.games.magick.GameActions;
 import com.gemserk.games.magick.components.BodyComponent;
 
 public class DashSystem extends EntitySystem {
 
-	static final long DASHTIME = 1000;
-	static final long DASHTIMEOUT = 1000;
+	static final long DASHTIME = 200;
+	static final long DASHTIMEOUT = 500;
 
 	ComponentMapper<BodyComponent> bodyMapper;
-	ButtonBar buttonBar = new ButtonBar(2);
 	private final GameActions gameActions;
 
 	private boolean dashing = false;
 	long dashTimeLeft = 0;
 	long currentDashTimeout = 0;
+	private JumpSystem jumpSystem;
 
 	public DashSystem(GameActions gameActions) {
 		this.gameActions = gameActions;
@@ -37,6 +31,7 @@ public class DashSystem extends EntitySystem {
 	@Override
 	public void initialize() {
 		ComponentMapperInitHelper.config(this, world.getEntityManager());
+		jumpSystem = world.getSystemManager().getSystem(JumpSystem.class);
 	}
 
 	Vector2 negativeGravity = new Vector2();
@@ -64,6 +59,7 @@ public class DashSystem extends EntitySystem {
 			if (dashTimeLeft < 0) {
 				dashing = false;
 				body.setLinearVelocity(linearVelocity.set(oldLinearX, body.getLinearVelocity().y));
+				jumpSystem.resetJumps();
 				currentDashTimeout = DASHTIMEOUT;
 			}
 		}

@@ -30,7 +30,7 @@ public class RunningSystem extends EntitySystem {
 	@Override
 	protected void processEntities(ImmutableBag<Entity> entities) {
 		Entity entity = world.getTagManager().getEntity(Entities.TAG_PLAYER);
-		force.set(0.1f, 0);
+		force.set(0.15f, 0);
 		
 		BodyComponent bodyComponent = bodyMapper.get(entity);
 		Body body = bodyComponent.body;
