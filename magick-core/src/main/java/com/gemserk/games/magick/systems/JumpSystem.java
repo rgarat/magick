@@ -48,7 +48,7 @@ public class JumpSystem extends EntitySystem {
 			@Override
 			public void beginContact(Contact contact) {
 				if (betweenTagGroup(Entities.TAG_PLAYER, Entities.GROUP_GROUND,  contact)) {
-					if(contact.GetWorldManifold().getNormal().dst2(upNormal) < 0.001f){
+					if(contact.getWorldManifold().getNormal().dst2(upNormal) < 0.001f){
 						onGround = true;
 						resetJumps();
 					}
