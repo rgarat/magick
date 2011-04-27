@@ -89,7 +89,6 @@ public class Magick implements ApplicationListener {
 		spriteRenderSystem = systemManager.setSystem(new SpriteRenderSystem(spriteBatch));
 		physicsTransformationSystem = systemManager.setSystem(new PhysicsTransformationSystem());
 		runningSystem = systemManager.setSystem(new RunningSystem());
-		cameraFollowSystem = systemManager.setSystem(new CameraFollowSystem(camera));
 		groundDetectionSystem = systemManager.setSystem(new GroundDetectionSystem());
 		deadDetectionSystem = systemManager.setSystem(new DeadDetectionSystem());
 		scoreSystem = systemManager.setSystem(new ScoreSystem());
@@ -97,6 +96,7 @@ public class Magick implements ApplicationListener {
 
 		jumpSystem = systemManager.setSystem(new JumpSystem(GameActionsFactory.getGameActions()));
 		dashSystem = systemManager.setSystem(new DashSystem(GameActionsFactory.getGameActions()));
+		cameraFollowSystem = systemManager.setSystem(new CameraFollowSystem(camera));
 
 		
 		
@@ -158,13 +158,13 @@ public class Magick implements ApplicationListener {
 		runningSystem.process();
 		physicsTransformationSystem.process();
 		// inputSystem.process();
-		spriteUpdateSystem.process();
 		// cloudSystem.process();
 		jumpSystem.process();
 		dashSystem.process();
-		cameraFollowSystem.process();
 		scoreSystem.process();
 		deadDetectionSystem.process();
+		cameraFollowSystem.process();
+		spriteUpdateSystem.process();
 
 	}
 
