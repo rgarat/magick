@@ -6,6 +6,7 @@ import com.artemis.Entity;
 import com.artemis.World;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -28,6 +29,7 @@ public class Entities {
 	public static final String GROUP_CLOUDS = "CLOUDS";
 	public static final String GROUP_GROUND = "GROUND";
 	public static final String TAG_PLAYER = "PLAYER";
+	public static final String TAG_BACKGROUND = "BACKGROUND";
 	private World world;
 	private Texture circleTexture;
 	private PhysicsSystem physicsSystem;
@@ -35,6 +37,8 @@ public class Entities {
 	public static  Vector2 playerStartPosition = new Vector2();
 	private Random random = new Random();
 	private Texture colorSquareTexture;
+	private Texture cloudTexture;
+	private Texture backgroundTexture;
 
 	public Entities(World world){
 		this.world = world;
@@ -42,6 +46,10 @@ public class Entities {
 		
 		squareTexture = new Texture(Gdx.files.internal("data/square.png"));
 		colorSquareTexture = new Texture(Gdx.files.internal("data/colorSquare.png"));
+		cloudTexture = new Texture(Gdx.files.internal("data/cloud-256x256.png"));
+		cloudTexture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+		backgroundTexture = new Texture(Gdx.files.internal("data/background-512x512.jpg"));
+		backgroundTexture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		physicsSystem = world.getSystemManager().getSystem(PhysicsSystem.class);
 	}
 	
@@ -84,34 +92,34 @@ public class Entities {
 	public Entity cloud(Vector2 vec){
 		return cloud(vec.x, vec.y);
 	}
+	
 	public Entity cloud(float x, float y){
 		Entity entity = world.createEntity();
-		Sprite sprite = new Sprite(circleTexture);
+		Sprite sprite = new Sprite(cloudTexture);
 		
-		sprite.setColor(1,0,0,1);
-		sprite.setSize(0.32f, 0.32f);
+		sprite.setSize(1f, 1f);
 		sprite.setPosition(x, y);
-		sprite.setScale(0.5f);
 		sprite.setOrigin(0.16f, 0.16f);
 		entity.addComponent(new SpriteComponent(sprite));
 		entity.addComponent(new PositionComponent(x, y));
-		entity.addComponent(new LayerComponent(2));
-		BodyDef bodyDef = new BodyDef();
-		bodyDef.type = BodyType.StaticBody;
-		bodyDef.position.set(x, y);
-		Body body = physicsSystem.getPhysicsWorld().createBody(bodyDef);
-		body.setUserData(entity);
-		CircleShape shape = new CircleShape();
-		shape.setPosition(new Vector2(0,0));
-		shape.setRadius(0.16f);
-		FixtureDef fixtureDef = new FixtureDef();
-		fixtureDef.shape = shape;
-		fixtureDef.density = 1;
-		fixtureDef.isSensor= true;
-		body.createFixture(fixtureDef);
-		shape.dispose();
-		entity.addComponent(new BodyComponent(body));
+		entity.addComponent(new LayerComponent(-5));
 		world.getGroupManager().set(GROUP_CLOUDS, entity);
+		entity.refresh();
+		return entity;
+	}
+	
+	public Entity background(float x, float y){
+		Entity entity = world.createEntity();
+		Sprite sprite = new Sprite(backgroundTexture);
+		
+		sprite.setSize(8f, 4.8f);
+		sprite.setPosition(x, y);
+		sprite.setOrigin(4f, 2.4f);
+		entity.addComponent(new SpriteComponent(sprite));
+		entity.addComponent(new PositionComponent(x, y));
+		entity.addComponent(new LayerComponent(-10));
+		world.getGroupManager().set(GROUP_CLOUDS, entity);
+		world.getTagManager().register(TAG_BACKGROUND, entity);
 		entity.refresh();
 		return entity;
 	}

@@ -13,6 +13,8 @@
 
 package com.gemserk.games.magick;
 
+import java.lang.reflect.Method;
+
 import com.artemis.EntitySystem;
 import com.artemis.SystemManager;
 import com.artemis.World;
@@ -96,12 +98,11 @@ public class Magick implements ApplicationListener {
 		jumpSystem = systemManager.setSystem(new JumpSystem(GameActionsFactory.getGameActions()));
 		dashSystem = systemManager.setSystem(new DashSystem(GameActionsFactory.getGameActions()));
 
-		ImmutableBag<EntitySystem> systems = systemManager.getSystems();
-		for (int i = 0; i < systems.size(); i++) {
-			EntitySystem system = systems.get(i);
-			system.initialize();
-		}
-		// systemManager.initializeAll();
+		
+		
+		fixInitializeAllSystems();
+		
+//		systemManager.initializeAll();
 
 		entities = new Entities(world);
 
@@ -115,10 +116,29 @@ public class Magick implements ApplicationListener {
 		}
 
 		entities.floor();
+		entities.background(0, 0);
 
 		box2drenderer = new Box2DDebugRenderer();
 
 		System.out.println("Arranco");
+	}
+
+	private void fixInitializeAllSystems() {
+		
+		try {
+			
+			Method method = EntitySystem.class.getDeclaredMethod("initialize", new Class[]{});
+			method.setAccessible(true);
+			
+			ImmutableBag<EntitySystem> systems = world.getSystemManager().getSystems();
+			for (int i = 0; i < systems.size(); i++) {
+				EntitySystem system = systems.get(i);
+				method.invoke(system, null);
+			}
+		} catch (Exception e) {
+			Gdx.app.log("Magick","Error initializing entitysystems",e);
+		}
+		
 	}
 
 	long oldTime;

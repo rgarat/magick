@@ -22,12 +22,19 @@ public class CameraFollowSystem extends EntitySystem {
 
 	@Override
 	protected void processEntities(ImmutableBag<Entity> entities) {
-		Entity entity = world.getTagManager().getEntity(Entities.TAG_PLAYER);
-		PositionComponent positionComponent = positionMapper.get(entity);
+		Entity playerEntity = world.getTagManager().getEntity(Entities.TAG_PLAYER);
+		
+		PositionComponent positionComponent = positionMapper.get(playerEntity);
 		
 		Vector2 pos = positionComponent.pos;
-		camera.position.set(pos.x + 3, camera.position.y, 0);
+		float cameraX = pos.x + 3;
+		float cameraY = camera.position.y;
+		camera.position.set(cameraX, cameraY, 0);
 		camera.update();
+		
+		Entity entityBackground = world.getTagManager().getEntity(Entities.TAG_BACKGROUND);
+		positionMapper.get(entityBackground).pos.set(cameraX, cameraY);
+		
 	}
 
 	@Override
