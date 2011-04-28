@@ -129,7 +129,7 @@ public class Entities {
 		float y = 1.5f;
 		float width = 5;
 		float heightDiff = 2f;
-		for(int i = 0; i < 60; i++){
+		for(int i = 0; i < 500; i++){
 			float currentY = y + heightDiff * random.nextFloat() - heightDiff/2f;
 			float currentWidth = width + (8*random.nextFloat() - 4f);
 			floor(x,currentY,currentWidth);

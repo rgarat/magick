@@ -59,7 +59,7 @@ public class DashSystem extends EntitySystem {
 			if (dashTimeLeft < 0) {
 				dashing = false;
 				body.setLinearVelocity(linearVelocity.set(oldLinearX, body.getLinearVelocity().y));
-				jumpSystem.resetJumps();
+//				jumpSystem.resetJumps();
 				currentDashTimeout = DASHTIMEOUT;
 			}
 		}

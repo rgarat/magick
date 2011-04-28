@@ -63,7 +63,6 @@ public class Magick implements ApplicationListener {
 	private EntitySystem runningSystem;
 	private EntitySystem cameraFollowSystem;
 	private EntitySystem jumpSystem;
-	private EntitySystem groundDetectionSystem;
 	private EntitySystem deadDetectionSystem;
 	private EntitySystem scoreSystem;
 	private EntitySystem scoreRenderSystem;
@@ -78,8 +77,6 @@ public class Magick implements ApplicationListener {
 		font = new BitmapFont();
 
 		world = new World();
-		
-		GameActionsFactory gameActions = new GameActionsFactory();
 
 		SystemManager systemManager = world.getSystemManager();
 		physicsSystem = systemManager.setSystem(new PhysicsSystem());
@@ -89,7 +86,6 @@ public class Magick implements ApplicationListener {
 		spriteRenderSystem = systemManager.setSystem(new SpriteRenderSystem(spriteBatch));
 		physicsTransformationSystem = systemManager.setSystem(new PhysicsTransformationSystem());
 		runningSystem = systemManager.setSystem(new RunningSystem());
-		groundDetectionSystem = systemManager.setSystem(new GroundDetectionSystem());
 		deadDetectionSystem = systemManager.setSystem(new DeadDetectionSystem());
 		scoreSystem = systemManager.setSystem(new ScoreSystem());
 		scoreRenderSystem = systemManager.setSystem(new ScoreRenderSystem(spriteBatch, font));
@@ -97,12 +93,8 @@ public class Magick implements ApplicationListener {
 		jumpSystem = systemManager.setSystem(new JumpSystem(GameActionsFactory.getGameActions()));
 		dashSystem = systemManager.setSystem(new DashSystem(GameActionsFactory.getGameActions()));
 		cameraFollowSystem = systemManager.setSystem(new CameraFollowSystem(camera));
-
 		
-		
-		fixInitializeAllSystems();
-		
-//		systemManager.initializeAll();
+		systemManager.initializeAll();
 
 		entities = new Entities(world);
 
@@ -123,23 +115,6 @@ public class Magick implements ApplicationListener {
 		System.out.println("Arranco");
 	}
 
-	private void fixInitializeAllSystems() {
-		
-		try {
-			
-			Method method = EntitySystem.class.getDeclaredMethod("initialize", new Class[]{});
-			method.setAccessible(true);
-			
-			ImmutableBag<EntitySystem> systems = world.getSystemManager().getSystems();
-			for (int i = 0; i < systems.size(); i++) {
-				EntitySystem system = systems.get(i);
-				method.invoke(system, null);
-			}
-		} catch (Exception e) {
-			Gdx.app.log("Magick","Error initializing entitysystems",e);
-		}
-		
-	}
 
 	long oldTime;
 

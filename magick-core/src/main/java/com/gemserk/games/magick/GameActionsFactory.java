@@ -28,11 +28,11 @@ public class GameActionsFactory {
 
 	static class GameActionsDesktop implements GameActions {
 		public boolean jump() {
-			return Gdx.input.isKeyPressed(Input.Keys.KEYCODE_Z) || Gdx.input.isButtonPressed(Input.Buttons.LEFT);
+			return Gdx.input.isKeyPressed(Input.Keys.Z) || Gdx.input.isButtonPressed(Input.Buttons.LEFT);
 		}
 
 		public boolean dash() {
-			return Gdx.input.isKeyPressed(Input.Keys.KEYCODE_X) || Gdx.input.isButtonPressed(Input.Buttons.RIGHT);
+			return Gdx.input.isKeyPressed(Input.Keys.X) || Gdx.input.isButtonPressed(Input.Buttons.RIGHT);
 		}
 	}
 
