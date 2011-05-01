@@ -30,8 +30,10 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.gemserk.games.magick.systems.CameraFollowSystem;
+import com.gemserk.games.magick.systems.CleanupSystem;
 import com.gemserk.games.magick.systems.DashSystem;
 import com.gemserk.games.magick.systems.DeadDetectionSystem;
+import com.gemserk.games.magick.systems.GenerateLevelSystem;
 import com.gemserk.games.magick.systems.GroundDetectionSystem;
 import com.gemserk.games.magick.systems.InputSystem;
 import com.gemserk.games.magick.systems.JumpSystem;
@@ -67,6 +69,8 @@ public class Magick implements ApplicationListener {
 	private EntitySystem scoreSystem;
 	private EntitySystem scoreRenderSystem;
 	private EntitySystem dashSystem;
+	private EntitySystem generateLevelSystem;
+	private EntitySystem cleanupSystem;
 
 	@Override
 	public void create() {
@@ -94,20 +98,24 @@ public class Magick implements ApplicationListener {
 		dashSystem = systemManager.setSystem(new DashSystem(GameActionsFactory.getGameActions()));
 		cameraFollowSystem = systemManager.setSystem(new CameraFollowSystem(camera));
 		
+		entities = new Entities(world);
+		generateLevelSystem = systemManager.setSystem(new GenerateLevelSystem(new LevelGenerator(entities)));
+		cleanupSystem = systemManager.setSystem(new CleanupSystem());
+		
+		
 		systemManager.initializeAll();
 
-		entities = new Entities(world);
 
-		float width = Gdx.graphics.getWidth() * 100 / 100f;
-		float height = Gdx.graphics.getHeight() / 100f;
+//		float width = Gdx.graphics.getWidth() * 100 / 100f;
+//		float height = Gdx.graphics.getHeight() / 100f;
+//
+		entities.player();
+//		for (int i = 0; i < 300; i++) {
+//			Vector2 pos = RandomVector.randomVector(0, 0, width, height);
+//			entities.cloud(pos);
+//		}
 
-		entities.player(1, 3);
-		for (int i = 0; i < 300; i++) {
-			Vector2 pos = RandomVector.randomVector(0, 0, width, height);
-			entities.cloud(pos);
-		}
-
-		entities.floor();
+//		entities.floor();
 		entities.background(0, 0);
 
 		box2drenderer = new Box2DDebugRenderer();
@@ -128,6 +136,7 @@ public class Magick implements ApplicationListener {
 		world.loopStart();
 //		int delta = (int) (deltaTime * 1000);
 		world.setDelta(deltaTime);
+		cleanupSystem.process();
 		physicsSystem.process();
 		// groundDetectionSystem.process();
 		runningSystem.process();
@@ -138,8 +147,10 @@ public class Magick implements ApplicationListener {
 		dashSystem.process();
 		scoreSystem.process();
 		deadDetectionSystem.process();
+		generateLevelSystem.process();
 		cameraFollowSystem.process();
 		spriteUpdateSystem.process();
+//		Gdx.app.log("Magick", "Entities: " + world.getEntityManager().getEntityCount());
 
 	}
 
@@ -182,7 +193,7 @@ public class Magick implements ApplicationListener {
 
 	@Override
 	public void pause() {
-
+		System.exit(0);
 	}
 
 	@Override

@@ -34,7 +34,7 @@ public class Entities {
 	private Texture circleTexture;
 	private PhysicsSystem physicsSystem;
 	private Texture squareTexture;
-	public static  Vector2 playerStartPosition = new Vector2();
+	public static  Vector2 playerStartPosition = new Vector2(1,3);
 	private Random random = new Random();
 	private Texture colorSquareTexture;
 	private Texture cloudTexture;
@@ -53,10 +53,9 @@ public class Entities {
 		physicsSystem = world.getSystemManager().getSystem(PhysicsSystem.class);
 	}
 	
-	public Entity player(float x, float y){
-		playerStartPosition.set(x, y);
+	public Entity player(){
 		Entity entity = world.createEntity();
-		entity.addComponent(new PositionComponent(x, y));
+		entity.addComponent(new PositionComponent(playerStartPosition.x, playerStartPosition.y));
 		Sprite sprite = new Sprite(circleTexture);
 		sprite.setColor(1,1,1,1);
 		sprite.setBounds(0, 0, 0.32f, 0.32f);
@@ -66,7 +65,7 @@ public class Entities {
 		entity.addComponent(new PlayerStatus());		
 		BodyDef bodyDef = new BodyDef();
 		bodyDef.type = BodyType.DynamicBody;
-		bodyDef.position.set(x,y);
+		bodyDef.position.set(playerStartPosition);
 		bodyDef.fixedRotation = true;
 		
 		Body body = physicsSystem.getPhysicsWorld().createBody(bodyDef);
