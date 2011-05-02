@@ -132,7 +132,23 @@ public class Magick implements ApplicationListener {
 		realRender();
 	}
 
+	int frames = 0;
+	int[] times = new int[1000];
+	
 	private void update(int deltaTime) {
+//		System.out.println(deltaTime);
+		times[deltaTime]= times[deltaTime] + 1;
+		frames++;
+		if(frames % 1000 == 0){
+			System.out.println("New deltaTime measure");
+			for (int i = 0; i < times.length; i++) {
+				int time = times[i];
+				if(time != 0)
+					System.out.println(i + ":= " + time);
+			}
+		}
+		
+		
 		world.loopStart();
 //		int delta = (int) (deltaTime * 1000);
 		world.setDelta(deltaTime);
@@ -151,6 +167,7 @@ public class Magick implements ApplicationListener {
 		cameraFollowSystem.process();
 		spriteUpdateSystem.process();
 //		Gdx.app.log("Magick", "Entities: " + world.getEntityManager().getEntityCount());
+		
 
 	}
 

@@ -15,7 +15,7 @@ public class CleanupSystem extends IntervalEntitySystem {
 	private static final float CLEANUPDISTANCE = 15;
 
 	public CleanupSystem() {
-		super(500, PositionComponent.class);
+		super(100, PositionComponent.class);
 	}
 
 	ComponentMapper<PositionComponent> positionMapper;

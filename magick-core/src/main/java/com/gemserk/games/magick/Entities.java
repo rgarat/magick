@@ -49,6 +49,7 @@ public class Entities {
 		cloudTexture = new Texture(Gdx.files.internal("data/cloud-256x256.png"));
 		cloudTexture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		backgroundTexture = new Texture(Gdx.files.internal("data/background-512x512.jpg"));
+		
 		backgroundTexture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		physicsSystem = world.getSystemManager().getSystem(PhysicsSystem.class);
 	}
@@ -109,7 +110,7 @@ public class Entities {
 	
 	public Entity background(float x, float y){
 		Entity entity = world.createEntity();
-		Sprite sprite = new Sprite(backgroundTexture);
+		Sprite sprite = new Sprite(backgroundTexture, 0,0, backgroundTexture.getWidth(), backgroundTexture.getHeight()/2);
 		
 		sprite.setSize(8f, 4.8f);
 		sprite.setPosition(x, y);
