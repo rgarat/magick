@@ -7,11 +7,12 @@ import com.artemis.utils.ImmutableBag;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Disposable;
 import com.gemserk.artemis.components.ComponentMapperInitHelper;
 import com.gemserk.games.magick.components.BodyComponent;
 import com.gemserk.games.magick.utils.ContactListenerMultiplexer;
 
-public class PhysicsSystem extends EntitySystem {
+public class PhysicsSystem extends EntitySystem implements Disposable{
 
 	public static final Vector2 GRAVITY = new Vector2(0,-10);
 //	public static final Vector2 GRAVITY = new Vector2(0,0);
@@ -60,6 +61,11 @@ public class PhysicsSystem extends EntitySystem {
 	
 	public void removeContactListener(ContactListener contactListener){
 		conctactListenerMultiplexer.removeListener(contactListener);		
+	}
+	
+	@Override
+	public void dispose() {
+		physicsWorld.dispose();
 	}
 
 }

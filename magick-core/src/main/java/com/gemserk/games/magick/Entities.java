@@ -17,6 +17,7 @@ import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.Shape;
+import com.badlogic.gdx.utils.Disposable;
 import com.gemserk.games.magick.components.BodyComponent;
 import com.gemserk.games.magick.components.LayerComponent;
 import com.gemserk.games.magick.components.PlayerStatus;
@@ -24,18 +25,18 @@ import com.gemserk.games.magick.components.PositionComponent;
 import com.gemserk.games.magick.components.SpriteComponent;
 import com.gemserk.games.magick.systems.PhysicsSystem;
 
-public class Entities {
+public class Entities implements Disposable {
 	
 	public static final String GROUP_CLOUDS = "CLOUDS";
 	public static final String GROUP_GROUND = "GROUND";
 	public static final String TAG_PLAYER = "PLAYER";
 	public static final String TAG_BACKGROUND = "BACKGROUND";
 	private World world;
-	private Texture circleTexture;
 	private PhysicsSystem physicsSystem;
-	private Texture squareTexture;
 	public static  Vector2 playerStartPosition = new Vector2(1,3);
 	private Random random = new Random();
+	private Texture circleTexture;
+	private Texture squareTexture;
 	private Texture colorSquareTexture;
 	private Texture cloudTexture;
 	private Texture backgroundTexture;
@@ -163,6 +164,16 @@ public class Entities {
 		world.getGroupManager().set(GROUP_GROUND, entity);
 		entity.refresh();
 		return entity;
+	}
+
+	@Override
+	public void dispose() {
+		circleTexture.dispose();
+		squareTexture.dispose();
+		colorSquareTexture.dispose();
+		cloudTexture.dispose();
+		backgroundTexture.dispose();
+		
 	}
 	
 }

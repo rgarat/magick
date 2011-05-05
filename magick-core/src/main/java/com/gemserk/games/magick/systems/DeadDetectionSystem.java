@@ -4,11 +4,14 @@ import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.EntitySystem;
 import com.artemis.utils.ImmutableBag;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.gemserk.artemis.components.ComponentMapperInitHelper;
 import com.gemserk.games.magick.Entities;
+import com.gemserk.games.magick.MagickGameScreen;
 import com.gemserk.games.magick.components.BodyComponent;
+import com.gemserk.games.magick.libgdx.Game;
 
 public class DeadDetectionSystem extends EntitySystem {
 
@@ -16,10 +19,12 @@ public class DeadDetectionSystem extends EntitySystem {
 	ComponentMapper<BodyComponent> bodyMapper;
 	private GenerateLevelSystem generateLevelSystem;
 	private CleanupSystem cleanupSystem;
+	private final Game game;
 
-	public DeadDetectionSystem() {
+	public DeadDetectionSystem(Game game) {
 		super();
-
+		this.game = game;
+		
 	}
 
 	@Override
@@ -39,10 +44,11 @@ public class DeadDetectionSystem extends EntitySystem {
 		BodyComponent bodyComponent = bodyMapper.get(entity);
 		Body body = bodyComponent.body;
 		if(body.getPosition().y < DEADALTITUDE){
-			body.setTransform(Entities.playerStartPosition, 0);
-			body.setLinearVelocity(new Vector2(0,0));
-			cleanupSystem.deleteEverything();
-			generateLevelSystem.reset();
+//			body.setTransform(Entities.playerStartPosition, 0);
+//			body.setLinearVelocity(new Vector2(0,0));
+//			cleanupSystem.deleteEverything();
+//			generateLevelSystem.reset();
+			game.setScreen(new MagickGameScreen(game), true);
 		}
 	}
 
