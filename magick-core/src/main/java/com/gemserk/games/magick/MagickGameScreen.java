@@ -210,18 +210,6 @@ public class MagickGameScreen implements Screen {
 
 		System.out.println("Dispose: " + this);
 		disposeEntitySystems();
-		resetEntitySystem();
-	}
-
-	private void resetEntitySystem() {
-		try {
-			Field sysidfield = EntitySystem.class.getDeclaredField("SYSID");
-			sysidfield.setAccessible(true);
-			sysidfield.set(null, 0);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 
 	private void disposeEntitySystems() {
