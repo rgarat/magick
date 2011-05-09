@@ -34,17 +34,17 @@ import com.gemserk.games.magick.systems.SpriteUpdateSystem;
 
 public class MagickGameScreen implements Screen {
 
-	SpriteBatch spriteBatch;
+	static SpriteBatch spriteBatch;
+	static BitmapFont font;
+	static Box2DDebugRenderer box2drenderer;
+	static boolean initialized = false;
+
 	private World world;
-	private EntitySystem inputSystem;
 	private EntitySystem spriteUpdateSystem;
 	private EntitySystem spriteRenderSystem;
 	private Entities entities;
-	private EntitySystem cloudSystem;
 	private EntitySystem physicsSystem;
 	private EntitySystem physicsTransformationSystem;
-	private Box2DDebugRenderer box2drenderer;
-	private BitmapFont font;
 	OrthographicCamera camera;
 	OrthographicCamera hudCamera;
 	private EntitySystem runningSystem;
@@ -61,21 +61,24 @@ public class MagickGameScreen implements Screen {
 	public MagickGameScreen(Game game) {
 		this.game = game;
 	}
-	
+
 	@Override
 	public void show() {
+		if (!initialized) {
+			spriteBatch = new SpriteBatch();
+			font = new BitmapFont();
+			box2drenderer = new Box2DDebugRenderer();
+			initialized = true;
+		}
+		
 		camera = new OrthographicCamera(8.00f, 4.80f);
 		hudCamera = new OrthographicCamera(800, 400);
-		spriteBatch = new SpriteBatch();
-		font = new BitmapFont();
 
 		world = new World();
 
 		SystemManager systemManager = world.getSystemManager();
 		physicsSystem = systemManager.setSystem(new PhysicsSystem());
-		inputSystem = systemManager.setSystem(new InputSystem(camera));
 		spriteUpdateSystem = systemManager.setSystem(new SpriteUpdateSystem());
-		cloudSystem = systemManager.setSystem(new PhysicsCloudSystem());
 		spriteRenderSystem = systemManager.setSystem(new SpriteRenderSystem(spriteBatch));
 		physicsTransformationSystem = systemManager.setSystem(new PhysicsTransformationSystem());
 		runningSystem = systemManager.setSystem(new RunningSystem());
@@ -104,8 +107,6 @@ public class MagickGameScreen implements Screen {
 
 		// entities.floor();
 		entities.background(0, 0);
-
-		box2drenderer = new Box2DDebugRenderer();
 
 		System.out.println("Arranco: " + this);
 	}
@@ -156,8 +157,8 @@ public class MagickGameScreen implements Screen {
 		spriteBatch.setTransformMatrix(camera.view);
 
 		spriteRenderSystem.process();
-//		 camera.apply(gl10);
-//		 box2drenderer.render(((PhysicsSystem) physicsSystem).getPhysicsWorld());
+		// camera.apply(gl10);
+		// box2drenderer.render(((PhysicsSystem) physicsSystem).getPhysicsWorld());
 
 		spriteBatch.setProjectionMatrix(hudCamera.projection);
 		spriteBatch.setTransformMatrix(hudCamera.view);
@@ -206,12 +207,8 @@ public class MagickGameScreen implements Screen {
 
 	@Override
 	public void dispose() {
-		
+
 		System.out.println("Dispose: " + this);
-		font.dispose();
-		box2drenderer.dispose();
-		spriteBatch.dispose();
-		entities.dispose();
 		disposeEntitySystems();
 		resetEntitySystem();
 	}

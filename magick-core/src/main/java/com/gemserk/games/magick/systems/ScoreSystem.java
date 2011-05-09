@@ -14,7 +14,7 @@ import com.gemserk.games.magick.components.BodyComponent;
 public class ScoreSystem extends EntitySystem {
 	ComponentMapper<BodyComponent> bodyMapper;
 	public int score = 0;
-	public int maxScore = 0;
+	public static int maxScore = 0;
 
 	@Override
 	public void initialize() {
