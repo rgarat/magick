@@ -7,6 +7,7 @@ import com.artemis.SystemManager;
 import com.artemis.World;
 import com.artemis.utils.Bag;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -140,12 +141,11 @@ public class MagickGameScreen implements Screen {
 		jumpSystem.process();
 		dashSystem.process();
 		scoreSystem.process();
-		deadDetectionSystem.process();
 		generateLevelSystem.process();
 		cameraFollowSystem.process();
 		spriteUpdateSystem.process();
 		// Gdx.app.log("Magick", "Entities: " + world.getEntityManager().getEntityCount());
-
+		deadDetectionSystem.process();
 	}
 
 	@Override
@@ -156,8 +156,8 @@ public class MagickGameScreen implements Screen {
 		spriteBatch.setTransformMatrix(camera.view);
 
 		spriteRenderSystem.process();
-		 camera.apply(gl10);
-		 box2drenderer.render(((PhysicsSystem) physicsSystem).getPhysicsWorld());
+//		 camera.apply(gl10);
+//		 box2drenderer.render(((PhysicsSystem) physicsSystem).getPhysicsWorld());
 
 		spriteBatch.setProjectionMatrix(hudCamera.projection);
 		spriteBatch.setTransformMatrix(hudCamera.view);
