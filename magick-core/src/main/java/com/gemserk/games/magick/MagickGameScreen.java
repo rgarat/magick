@@ -157,8 +157,8 @@ public class MagickGameScreen implements Screen {
 		spriteBatch.setTransformMatrix(camera.view);
 
 		spriteRenderSystem.process();
-		// camera.apply(gl10);
-		// box2drenderer.render(((PhysicsSystem) physicsSystem).getPhysicsWorld());
+		 camera.apply(gl10);
+		 box2drenderer.render(((PhysicsSystem) physicsSystem).getPhysicsWorld());
 
 		spriteBatch.setProjectionMatrix(hudCamera.projection);
 		spriteBatch.setTransformMatrix(hudCamera.view);

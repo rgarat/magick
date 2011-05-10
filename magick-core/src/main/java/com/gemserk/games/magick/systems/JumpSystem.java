@@ -13,6 +13,8 @@ import com.gemserk.artemis.components.ComponentMapperInitHelper;
 import com.gemserk.games.magick.Entities;
 import com.gemserk.games.magick.GameActions;
 import com.gemserk.games.magick.components.BodyComponent;
+import com.gemserk.games.magick.utils.Collisions;
+import com.gemserk.games.magick.utils.Collisions.Result;
 
 public class JumpSystem extends EntitySystem {
 
@@ -25,53 +27,50 @@ public class JumpSystem extends EntitySystem {
 	
 	private final GameActions gameActions;
 	
+	private Collisions collisions;
 
 	public JumpSystem(GameActions gameActions) {
 		this.gameActions = gameActions;
 	}
+	
 
 	@Override
 	public void initialize() {
 		ComponentMapperInitHelper.config(this, world.getEntityManager());
+		collisions = new Collisions(world);
 		world.getSystemManager().getSystem(PhysicsSystem.class).addContactListener(new ContactListener() {
 
 			Vector2 upNormal = new Vector2(0,1);
+			Vector2 downNormal = new Vector2(0,-1);
 			
 			@Override
 			public void endContact(Contact contact) {
-				if (betweenTagGroup(Entities.TAG_PLAYER, Entities.GROUP_GROUND, contact)) {
+				if (collisions.betweenTagGroup(Entities.TAG_PLAYER, Entities.GROUP_GROUND, contact).collided() ) {
 					onGround = false;
 				}
 
 			}
 
+			Vector2 directedNormal = new Vector2();
 			@Override
 			public void beginContact(Contact contact) {
-				if (betweenTagGroup(Entities.TAG_PLAYER, Entities.GROUP_GROUND,  contact)) {
-					if(contact.getWorldManifold().getNormal().dst2(upNormal) < 0.001f){
-						onGround = true;
-						resetJumps();
-					}
-				}
-
-			}
-
-			private boolean betweenTagGroup(String tag, String group, Contact contact) {
-				Entity entity = world.getTagManager().getEntity(tag);
-				GroupManager groupManager = world.getGroupManager();
-				Body tagBody = bodyMapper.get(entity).body;
-				Body bodyA = contact.getFixtureA().getBody();
-				Body bodyB = contact.getFixtureB().getBody();
-				Entity entityA = (Entity) (bodyA.getUserData());
-				Entity entityB = (Entity) (bodyB.getUserData());
-				if ((bodyA == tagBody) && group.equals(groupManager.getGroupOf(entityB))) {
-					return true;
-				} else if (bodyB == tagBody && group.equals(groupManager.getGroupOf(entityA))) {
-					return true;
-				} else {
-					return false;
+				Result collisionResult = collisions.betweenTagGroup(Entities.TAG_PLAYER, Entities.GROUP_GROUND,  contact);
+				
+				if(!collisionResult.collided())
+					return;
+				
+				Vector2 normal = contact.getWorldManifold().getNormal();
+				Vector2 desiredNormal = downNormal;
+				
+				if(collisionResult == Result.BA)
+					desiredNormal = upNormal;
+				
+				if(normal.dst2(desiredNormal) < 0.001f){
+					onGround = true;
+					resetJumps();
 				}
 			}
+
 		});
 	}
 

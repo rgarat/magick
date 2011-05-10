@@ -80,12 +80,15 @@ public class Entities {
 		body.setUserData(entity);
 		FixtureDef fixtureDef = new FixtureDef();
 
-		CircleShape shape = new CircleShape();
-		shape.setPosition(new Vector2(0, 0));
+//		CircleShape shape = new CircleShape();
+//		shape.setPosition(new Vector2(0, 0));
+//		shape.setRadius(0.16f);
+		
+		PolygonShape shape = new PolygonShape();
+		shape.setAsBox(0.2513f/2f, 0.32f/2f);
 		fixtureDef.shape = shape;
 		fixtureDef.density = 1;
 		fixtureDef.friction = 0;
-		shape.setRadius(0.16f);
 		body.createFixture(fixtureDef);
 		shape.dispose();
 		entity.addComponent(new BodyComponent(body));
