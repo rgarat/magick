@@ -27,10 +27,12 @@ public class DeadDetectionSystem extends EntitySystem {
 	private Collisions collisions;
 	
 	boolean playerShouldDie = false;
+	private final MagickGameScreen gameScreen;
 
-	public DeadDetectionSystem(Game game) {
+	public DeadDetectionSystem(Game game, MagickGameScreen gameScreen) {
 		super();
 		this.game = game;
+		this.gameScreen = gameScreen;
 
 	}
 
@@ -82,11 +84,7 @@ public class DeadDetectionSystem extends EntitySystem {
 		BodyComponent bodyComponent = bodyMapper.get(entity);
 		Body body = bodyComponent.body;
 		if (body.getPosition().y < DEADALTITUDE || playerShouldDie ){
-			// body.setTransform(Entities.playerStartPosition, 0);
-			// body.setLinearVelocity(new Vector2(0,0));
-			// cleanupSystem.deleteEverything();
-			// generateLevelSystem.reset();
-			game.setScreen(new MagickGameScreen(game), true);
+			gameScreen.playerDied = true;
 		}
 	}
 

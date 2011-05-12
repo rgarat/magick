@@ -1,6 +1,7 @@
 package com.gemserk.games.magick;
 
 import java.lang.reflect.Field;
+import java.util.Arrays;
 
 import com.artemis.EntitySystem;
 import com.artemis.SystemManager;
@@ -12,7 +13,9 @@ import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import com.gemserk.games.magick.libgdx.Game;
 import com.gemserk.games.magick.libgdx.Screen;
@@ -58,6 +61,8 @@ public class MagickGameScreen implements Screen {
 	private EntitySystem cleanupSystem;
 	private Game game;
 
+	public boolean playerDied = false;
+
 	public MagickGameScreen(Game game) {
 		this.game = game;
 	}
@@ -70,7 +75,7 @@ public class MagickGameScreen implements Screen {
 			box2drenderer = new Box2DDebugRenderer();
 			initialized = true;
 		}
-		
+
 		camera = new OrthographicCamera(8.00f, 4.80f);
 		hudCamera = new OrthographicCamera(800, 400);
 
@@ -82,7 +87,7 @@ public class MagickGameScreen implements Screen {
 		spriteRenderSystem = systemManager.setSystem(new SpriteRenderSystem(spriteBatch));
 		physicsTransformationSystem = systemManager.setSystem(new PhysicsTransformationSystem());
 		runningSystem = systemManager.setSystem(new RunningSystem());
-		deadDetectionSystem = systemManager.setSystem(new DeadDetectionSystem(game));
+		deadDetectionSystem = systemManager.setSystem(new DeadDetectionSystem(game, this));
 		scoreSystem = systemManager.setSystem(new ScoreSystem());
 		scoreRenderSystem = systemManager.setSystem(new ScoreRenderSystem(spriteBatch, font));
 
@@ -112,41 +117,75 @@ public class MagickGameScreen implements Screen {
 	}
 
 	int frames = 0;
-	int[] times = new int[1000];
+
+	class IntegerHistogram {
+		int[] values;
+
+		public IntegerHistogram() {
+			this(100);
+		}
+
+		public IntegerHistogram(int initialValue) {
+			values = new int[initialValue];
+		}
+
+		public void add(int value) {
+			if (value >= values.length) {
+				values = Arrays.copyOf(values, MathUtils.nextPowerOfTwo(value + 1));
+				System.out.println("Creciendo: " + values.length);
+			}
+			values[value] = values[value] + 1;
+		}
+
+		public void print() {
+			for (int i = 0; i < values.length; i++) {
+				int value = values[i];
+				if (value != 0)
+					System.out.println(i + ":= " + value);
+			}
+		}
+	}
+
+	IntegerHistogram histogram = new IntegerHistogram();
+	int timeAfterDeath = 2000;
 
 	@Override
 	public void update(float deltaTime) {
 		int delta = (int) (deltaTime * 1000);
 		// System.out.println(deltaTime);
-		times[delta] = times[delta] + 1;
+		histogram.add(delta);
 		frames++;
 		if (frames % 1000 == 0) {
 			System.out.println("New deltaTime measure");
-			for (int i = 0; i < times.length; i++) {
-				int time = times[i];
-				if (time != 0)
-					System.out.println(i + ":= " + time);
-			}
+			histogram.print();
 		}
 
 		world.loopStart();
 		// int delta = (int) (deltaTime * 1000);
 		world.setDelta(delta);
-		cleanupSystem.process();
-		physicsSystem.process();
-		// groundDetectionSystem.process();
-		runningSystem.process();
-		physicsTransformationSystem.process();
-		// inputSystem.process();
-		// cloudSystem.process();
-		jumpSystem.process();
-		dashSystem.process();
-		scoreSystem.process();
-		generateLevelSystem.process();
-		cameraFollowSystem.process();
-		spriteUpdateSystem.process();
-		// Gdx.app.log("Magick", "Entities: " + world.getEntityManager().getEntityCount());
-		deadDetectionSystem.process();
+
+		if (!playerDied) {
+			cleanupSystem.process();
+			physicsSystem.process();
+			// groundDetectionSystem.process();
+			runningSystem.process();
+			physicsTransformationSystem.process();
+			// inputSystem.process();
+			// cloudSystem.process();
+			jumpSystem.process();
+			dashSystem.process();
+			scoreSystem.process();
+			generateLevelSystem.process();
+			cameraFollowSystem.process();
+			spriteUpdateSystem.process();
+			// Gdx.app.log("Magick", "Entities: " + world.getEntityManager().getEntityCount());
+			deadDetectionSystem.process();
+		} else {
+			timeAfterDeath -= delta;
+			if(timeAfterDeath < 0){
+				game.setScreen(new MagickGameScreen(game), true);
+			}
+		}
 	}
 
 	@Override
@@ -157,8 +196,8 @@ public class MagickGameScreen implements Screen {
 		spriteBatch.setTransformMatrix(camera.view);
 
 		spriteRenderSystem.process();
-		 camera.apply(gl10);
-		 box2drenderer.render(((PhysicsSystem) physicsSystem).getPhysicsWorld());
+		camera.apply(gl10);
+		box2drenderer.render(((PhysicsSystem) physicsSystem).getPhysicsWorld());
 
 		spriteBatch.setProjectionMatrix(hudCamera.projection);
 		spriteBatch.setTransformMatrix(hudCamera.view);
