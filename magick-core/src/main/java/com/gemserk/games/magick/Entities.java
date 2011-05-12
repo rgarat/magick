@@ -64,10 +64,10 @@ public class Entities {
 	public Entity player() {
 		Entity entity = world.createEntity();
 		entity.addComponent(new PositionComponent(playerStartPosition.x, playerStartPosition.y));
-		Sprite sprite = new Sprite(circleTexture);
+		Sprite sprite = new Sprite(squareTexture);
 		sprite.setColor(1, 1, 1, 1);
-		sprite.setBounds(0, 0, 0.32f, 0.32f);
-		sprite.setOrigin(0.16f, 0.16f);
+		sprite.setBounds(0, 0, 0.2513f, 0.32f);
+		sprite.setOrigin(0.2513f/2f, 0.32f/2f);
 		entity.addComponent(new SpriteComponent(sprite));
 		entity.addComponent(new LayerComponent(1));
 		entity.addComponent(new PlayerStatus());

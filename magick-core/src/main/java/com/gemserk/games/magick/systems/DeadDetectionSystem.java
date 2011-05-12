@@ -7,11 +7,15 @@ import com.artemis.utils.ImmutableBag;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.Contact;
+import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.gemserk.artemis.components.ComponentMapperInitHelper;
 import com.gemserk.games.magick.Entities;
 import com.gemserk.games.magick.MagickGameScreen;
 import com.gemserk.games.magick.components.BodyComponent;
 import com.gemserk.games.magick.libgdx.Game;
+import com.gemserk.games.magick.utils.Collisions;
+import com.gemserk.games.magick.utils.Collisions.Result;
 
 public class DeadDetectionSystem extends EntitySystem {
 
@@ -20,11 +24,14 @@ public class DeadDetectionSystem extends EntitySystem {
 	private GenerateLevelSystem generateLevelSystem;
 	private CleanupSystem cleanupSystem;
 	private final Game game;
+	private Collisions collisions;
+	
+	boolean playerShouldDie = false;
 
 	public DeadDetectionSystem(Game game) {
 		super();
 		this.game = game;
-		
+
 	}
 
 	@Override
@@ -32,6 +39,37 @@ public class DeadDetectionSystem extends EntitySystem {
 		ComponentMapperInitHelper.config(this, world.getEntityManager());
 		generateLevelSystem = world.getSystemManager().getSystem(GenerateLevelSystem.class);
 		cleanupSystem = world.getSystemManager().getSystem(CleanupSystem.class);
+		collisions = new Collisions(world);
+		world.getSystemManager().getSystem(PhysicsSystem.class).addContactListener(new ContactListener() {
+
+			Vector2 upNormal = new Vector2(0, 1);
+			Vector2 downNormal = new Vector2(0, -1);
+
+			@Override
+			public void endContact(Contact contact) {
+			}
+
+			Vector2 directedNormal = new Vector2();
+
+			@Override
+			public void beginContact(Contact contact) {
+				Result collisionResult = collisions.betweenTagGroup(Entities.TAG_PLAYER, Entities.GROUP_GROUND, contact);
+
+				if (!collisionResult.collided())
+					return;
+
+				Vector2 normal = contact.getWorldManifold().getNormal();
+				Vector2 desiredNormal = downNormal;
+
+				if (collisionResult == Result.BA)
+					desiredNormal = upNormal;
+
+				if (normal.dst2(desiredNormal) > 0.1f) {
+					playerShouldDie = true;
+				}
+			}
+
+		});
 	}
 
 	Vector2 force = new Vector2();
@@ -40,14 +78,14 @@ public class DeadDetectionSystem extends EntitySystem {
 	protected void processEntities(ImmutableBag<Entity> entities) {
 		Entity entity = world.getTagManager().getEntity(Entities.TAG_PLAYER);
 		force.set(0.1f, 0);
-		
+
 		BodyComponent bodyComponent = bodyMapper.get(entity);
 		Body body = bodyComponent.body;
-		if(body.getPosition().y < DEADALTITUDE){
-//			body.setTransform(Entities.playerStartPosition, 0);
-//			body.setLinearVelocity(new Vector2(0,0));
-//			cleanupSystem.deleteEverything();
-//			generateLevelSystem.reset();
+		if (body.getPosition().y < DEADALTITUDE || playerShouldDie ){
+			// body.setTransform(Entities.playerStartPosition, 0);
+			// body.setLinearVelocity(new Vector2(0,0));
+			// cleanupSystem.deleteEverything();
+			// generateLevelSystem.reset();
 			game.setScreen(new MagickGameScreen(game), true);
 		}
 	}
