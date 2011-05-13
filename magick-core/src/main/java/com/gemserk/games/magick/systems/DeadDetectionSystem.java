@@ -90,7 +90,7 @@ public class DeadDetectionSystem extends EntitySystem {
 		Vector2 velocity = body.getLinearVelocity();
 		if (position.y < DEADALTITUDE || playerShouldDie || Gdx.input.isKeyPressed(Keys.K) ){
 			world.getSystemManager().getSystem(PhysicsSystem.class).cleanContactListeners();
-			for (int i = 0; i < 5; i++) {
+			for (int i = 0; i < 20; i++) {
 				entitiesBuilder.explosionBalls(position.x, position.y, velocity.x, (float)Math.random() * 4 - 2f);				
 			}
 			entity.delete();
