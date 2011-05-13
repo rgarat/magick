@@ -17,7 +17,7 @@ public class PhysicsSystem extends EntitySystem implements Disposable{
 	public static final Vector2 GRAVITY = new Vector2(0,-10);
 //	public static final Vector2 GRAVITY = new Vector2(0,0);
 	World physicsWorld;
-	private ContactListenerMultiplexer conctactListenerMultiplexer;
+	private ContactListenerMultiplexer contactListenerMultiplexer;
 	ComponentMapper<BodyComponent> bodyMapper;
 	
 	public PhysicsSystem() {
@@ -46,8 +46,8 @@ public class PhysicsSystem extends EntitySystem implements Disposable{
 	@Override
 	public void initialize() {
 		physicsWorld = new World(GRAVITY, true);
-		conctactListenerMultiplexer = new ContactListenerMultiplexer();
-		physicsWorld.setContactListener(conctactListenerMultiplexer);
+		contactListenerMultiplexer = new ContactListenerMultiplexer();
+		physicsWorld.setContactListener(contactListenerMultiplexer);
 		ComponentMapperInitHelper.config(this, world.getEntityManager());
 	}
 	
@@ -56,12 +56,17 @@ public class PhysicsSystem extends EntitySystem implements Disposable{
 	}
 	
 	public void addContactListener(ContactListener contactListener){
-		conctactListenerMultiplexer.addListener(contactListener);		
+		contactListenerMultiplexer.addListener(contactListener);		
 	}
 	
 	public void removeContactListener(ContactListener contactListener){
-		conctactListenerMultiplexer.removeListener(contactListener);		
+		contactListenerMultiplexer.removeListener(contactListener);		
 	}
+	
+	public void cleanContactListeners(){
+		contactListenerMultiplexer.removeAll();
+	}
+	
 	
 	@Override
 	public void dispose() {

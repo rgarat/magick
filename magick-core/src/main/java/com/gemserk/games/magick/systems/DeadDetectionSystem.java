@@ -28,11 +28,13 @@ public class DeadDetectionSystem extends EntitySystem {
 	
 	boolean playerShouldDie = false;
 	private final MagickGameScreen gameScreen;
+	private final Entities entitiesBuilder;
 
-	public DeadDetectionSystem(Game game, MagickGameScreen gameScreen) {
+	public DeadDetectionSystem(Game game, MagickGameScreen gameScreen, Entities entities) {
 		super();
 		this.game = game;
 		this.gameScreen = gameScreen;
+		this.entitiesBuilder = entities;
 
 	}
 
@@ -83,7 +85,14 @@ public class DeadDetectionSystem extends EntitySystem {
 
 		BodyComponent bodyComponent = bodyMapper.get(entity);
 		Body body = bodyComponent.body;
-		if (body.getPosition().y < DEADALTITUDE || playerShouldDie ){
+		Vector2 position = body.getPosition();
+		Vector2 velocity = body.getLinearVelocity();
+		if (position.y < DEADALTITUDE || playerShouldDie ){
+			world.getSystemManager().getSystem(PhysicsSystem.class).cleanContactListeners();
+			for (int i = 0; i < 5; i++) {
+				entitiesBuilder.explosionBalls(position.x, position.y, velocity.x*10, (float)Math.random() * 3 - 1.5f);				
+			}
+			entity.delete();
 			gameScreen.playerDied = true;
 		}
 	}

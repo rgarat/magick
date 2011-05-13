@@ -30,6 +30,8 @@ public class Collisions {
 
 	public Result betweenTagGroup(String tag, String group, Contact contact) {
 		Entity entity = world.getTagManager().getEntity(tag);
+		if(entity==null)
+			return Result.NONE;
 		GroupManager groupManager = world.getGroupManager();
 		Body tagBody = bodyMapper.get(entity).body;
 		Body bodyA = contact.getFixtureA().getBody();

@@ -173,4 +173,29 @@ public class Entities {
 		entity.refresh();
 		return entity;
 	}
+	
+	public Entity explosionBalls(float x, float y, float velX, float velY) {
+		Entity entity = world.createEntity();
+		Sprite sprite = new Sprite(circleTexture);
+
+		// sprite.setColor(1,0,0,1);
+		sprite.setColor(1, 1, 1, 1);
+		sprite.setBounds(0, 0, 0.2513f/2f, 0.32f/2f);
+		sprite.setOrigin(0.2513f/4f, 0.32f/4f);
+		entity.addComponent(new SpriteComponent(sprite));
+		entity.addComponent(new PositionComponent(x,y));
+		entity.addComponent(new LayerComponent(100));
+		BodyDef bodyDef = new BodyDef();
+		bodyDef.type = BodyType.DynamicBody;
+		bodyDef.position.set(x,y);
+		Body body = physicsSystem.getPhysicsWorld().createBody(bodyDef);
+		body.setUserData(entity);
+		CircleShape shape = new CircleShape();
+		shape.setRadius(0.2513f/4f);
+		body.createFixture(shape, 1);
+		shape.dispose();
+		entity.addComponent(new BodyComponent(body));
+		entity.refresh();
+		return entity;
+	}
 }

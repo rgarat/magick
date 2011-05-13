@@ -87,7 +87,8 @@ public class MagickGameScreen implements Screen {
 		spriteRenderSystem = systemManager.setSystem(new SpriteRenderSystem(spriteBatch));
 		physicsTransformationSystem = systemManager.setSystem(new PhysicsTransformationSystem());
 		runningSystem = systemManager.setSystem(new RunningSystem());
-		deadDetectionSystem = systemManager.setSystem(new DeadDetectionSystem(game, this));
+		entities = new Entities(world);
+		deadDetectionSystem = systemManager.setSystem(new DeadDetectionSystem(game, this, entities));
 		scoreSystem = systemManager.setSystem(new ScoreSystem());
 		scoreRenderSystem = systemManager.setSystem(new ScoreRenderSystem(spriteBatch, font));
 
@@ -95,7 +96,6 @@ public class MagickGameScreen implements Screen {
 		dashSystem = systemManager.setSystem(new DashSystem(GameActionsFactory.getGameActions()));
 		cameraFollowSystem = systemManager.setSystem(new CameraFollowSystem(camera));
 
-		entities = new Entities(world);
 		generateLevelSystem = systemManager.setSystem(new GenerateLevelSystem(new LevelGenerator(entities)));
 		cleanupSystem = systemManager.setSystem(new CleanupSystem());
 
@@ -181,6 +181,10 @@ public class MagickGameScreen implements Screen {
 			// Gdx.app.log("Magick", "Entities: " + world.getEntityManager().getEntityCount());
 			deadDetectionSystem.process();
 		} else {
+			physicsSystem.process();
+			physicsTransformationSystem.process();
+			spriteUpdateSystem.process();
+			
 			timeAfterDeath -= delta;
 			if(timeAfterDeath < 0){
 				game.setScreen(new MagickGameScreen(game), true);

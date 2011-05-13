@@ -27,4 +27,8 @@ public class ContactListenerMultiplexer implements ContactListener {
 		for (int i = 0, n = listeners.size(); i < n; i++)
 			listeners.get(i).endContact(contact);
 	}
+
+	public void removeAll() {
+		listeners.clear();
+	}
 }
