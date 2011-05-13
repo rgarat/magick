@@ -189,13 +189,24 @@ public class Entities {
 		BodyDef bodyDef = new BodyDef();
 		bodyDef.type = BodyType.DynamicBody;
 		bodyDef.position.set(x,y);
+		
 		Body body = physicsSystem.getPhysicsWorld().createBody(bodyDef);
 		body.setUserData(entity);
+		
+		
 		CircleShape shape = new CircleShape();
 		shape.setRadius(0.2513f/4f);
-		body.createFixture(shape, 1);
+	
+		FixtureDef fixtureDef = new FixtureDef();
+
+		fixtureDef.shape = shape;
+		fixtureDef.density = 1;
+		fixtureDef.friction = 0;
+		fixtureDef.restitution = 0.25f;
+		body.createFixture(fixtureDef);
 		shape.dispose();
 		body.setLinearVelocity(new Vector2(velX,velY));
+//		body.applyForce(new Vector2(velX,velY), body.getPosition());
 		entity.addComponent(new BodyComponent(body));
 		entity.refresh();
 		return entity;

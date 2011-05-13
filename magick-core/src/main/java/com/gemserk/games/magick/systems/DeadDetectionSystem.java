@@ -91,7 +91,7 @@ public class DeadDetectionSystem extends EntitySystem {
 		if (position.y < DEADALTITUDE || playerShouldDie || Gdx.input.isKeyPressed(Keys.K) ){
 			world.getSystemManager().getSystem(PhysicsSystem.class).cleanContactListeners();
 			for (int i = 0; i < 5; i++) {
-				entitiesBuilder.explosionBalls(position.x, position.y, velocity.x, (float)Math.random() * 3 - 1.5f);				
+				entitiesBuilder.explosionBalls(position.x, position.y, velocity.x, (float)Math.random() * 4 - 2f);				
 			}
 			entity.delete();
 			gameScreen.playerDied = true;
