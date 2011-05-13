@@ -190,8 +190,15 @@ public class MagickGameScreen implements Screen {
 				game.setScreen(new MagickGameScreen(game), true);
 			}
 		}
+		
+		if(Gdx.input.isKeyPressed(Keys.V))
+			box2dDebug = true;
+		if(Gdx.input.isKeyPressed(Keys.B))
+			box2dDebug = false;
 	}
 
+	boolean box2dDebug = false;
+	
 	@Override
 	public void render() {
 		GL10 gl10 = Gdx.graphics.getGL10();
@@ -200,9 +207,11 @@ public class MagickGameScreen implements Screen {
 		spriteBatch.setTransformMatrix(camera.view);
 
 		spriteRenderSystem.process();
-		camera.apply(gl10);
-		box2drenderer.render(((PhysicsSystem) physicsSystem).getPhysicsWorld());
-
+		if(box2dDebug){
+			camera.apply(gl10);
+			box2drenderer.render(((PhysicsSystem) physicsSystem).getPhysicsWorld());
+		}
+			
 		spriteBatch.setProjectionMatrix(hudCamera.projection);
 		spriteBatch.setTransformMatrix(hudCamera.view);
 		spriteBatch.begin();
