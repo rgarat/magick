@@ -5,6 +5,7 @@ import com.artemis.Entity;
 import com.artemis.EntitySystem;
 import com.artemis.utils.ImmutableBag;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Contact;
@@ -87,10 +88,10 @@ public class DeadDetectionSystem extends EntitySystem {
 		Body body = bodyComponent.body;
 		Vector2 position = body.getPosition();
 		Vector2 velocity = body.getLinearVelocity();
-		if (position.y < DEADALTITUDE || playerShouldDie ){
+		if (position.y < DEADALTITUDE || playerShouldDie || Gdx.input.isKeyPressed(Keys.K) ){
 			world.getSystemManager().getSystem(PhysicsSystem.class).cleanContactListeners();
 			for (int i = 0; i < 5; i++) {
-				entitiesBuilder.explosionBalls(position.x, position.y, velocity.x*10, (float)Math.random() * 3 - 1.5f);				
+				entitiesBuilder.explosionBalls(position.x, position.y, velocity.x, (float)Math.random() * 3 - 1.5f);				
 			}
 			entity.delete();
 			gameScreen.playerDied = true;

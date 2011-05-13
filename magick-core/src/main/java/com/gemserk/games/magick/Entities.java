@@ -75,7 +75,7 @@ public class Entities {
 		bodyDef.type = BodyType.DynamicBody;
 		bodyDef.position.set(playerStartPosition);
 		bodyDef.fixedRotation = true;
-
+		
 		Body body = physicsSystem.getPhysicsWorld().createBody(bodyDef);
 		body.setUserData(entity);
 		FixtureDef fixtureDef = new FixtureDef();
@@ -174,6 +174,7 @@ public class Entities {
 		return entity;
 	}
 	
+	
 	public Entity explosionBalls(float x, float y, float velX, float velY) {
 		Entity entity = world.createEntity();
 		Sprite sprite = new Sprite(circleTexture);
@@ -194,6 +195,7 @@ public class Entities {
 		shape.setRadius(0.2513f/4f);
 		body.createFixture(shape, 1);
 		shape.dispose();
+		body.setLinearVelocity(new Vector2(velX,velY));
 		entity.addComponent(new BodyComponent(body));
 		entity.refresh();
 		return entity;
