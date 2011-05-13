@@ -16,6 +16,7 @@ import com.gemserk.games.magick.MagickGameScreen;
 import com.gemserk.games.magick.components.BodyComponent;
 import com.gemserk.games.magick.libgdx.Game;
 import com.gemserk.games.magick.utils.Collisions;
+import com.gemserk.games.magick.utils.RandomVector;
 import com.gemserk.games.magick.utils.Collisions.Result;
 
 public class DeadDetectionSystem extends EntitySystem {
@@ -90,8 +91,12 @@ public class DeadDetectionSystem extends EntitySystem {
 		Vector2 velocity = body.getLinearVelocity();
 		if (position.y < DEADALTITUDE || playerShouldDie || Gdx.input.isKeyPressed(Keys.K) ){
 			world.getSystemManager().getSystem(PhysicsSystem.class).cleanContactListeners();
+			Vector2 newPos = new Vector2();
+			float halfWidth = 0.2513f/2f;
+			float halfHeight = 0.32f/2f;
 			for (int i = 0; i < 20; i++) {
-				entitiesBuilder.explosionBalls(position.x, position.y, velocity.x, (float)Math.random() * 4 - 2f);				
+				RandomVector.randomVector(position.x - halfWidth, position.y - halfHeight, position.x + halfWidth, position.y + halfHeight,newPos);
+				entitiesBuilder.explosionBalls(newPos.x, newPos.y, velocity.x, (float)Math.random() * 4 - 2f);				
 			}
 			entity.delete();
 			gameScreen.playerDied = true;
