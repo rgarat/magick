@@ -19,7 +19,9 @@ public class Magick extends Game {
 
 	@Override
 	public void create() {
-		setScreen(new MagickGameScreen(this), false);
+		MagickGameScreen gameScreen = new MagickGameScreen(this);
+		SplashScreen splashScreen = new SplashScreen("data/logo-gemserk-512x128-white.png", gameScreen, this);
+		setScreen(splashScreen, false);
 		
 	}
 
