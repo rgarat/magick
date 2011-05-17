@@ -12,7 +12,7 @@ public class LevelGenerator {
 	static final float CENTER_Y = 1f;
 
 	private static final float MINSPACE = 1;
-	private static final float VARIABLESPACE = 3;
+	private static final float VARIABLESPACE = 5;
 	private static final int MINWIDTH = 6;
 	private static final float VARIABLEWIDTH = 2;
 	private static final float VARIABLEY = 1.5f;

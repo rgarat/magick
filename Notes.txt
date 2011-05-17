@@ -1,0 +1,9 @@
+Ideas:
+
+-laser destroy obstacles
+-can throw a hook to swing over stuff
+-can transform 
+	- liquid
+	- small balls
+	- just change size
+	

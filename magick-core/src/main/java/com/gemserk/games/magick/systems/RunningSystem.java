@@ -34,7 +34,7 @@ public class RunningSystem extends EntitySystem {
 		
 		BodyComponent bodyComponent = bodyMapper.get(entity);
 		Body body = bodyComponent.body;
-		if(body.getLinearVelocity().x < 7f){			
+		if(body.getLinearVelocity().x < 8.5f){			
 			body.applyForce(force, body.getPosition());
 		}
 //		Gdx.app.log("Magick", "Speed: " + body.getLinearVelocity());
