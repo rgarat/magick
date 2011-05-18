@@ -1,8 +1,5 @@
 package com.gemserk.games.magick;
 
-import java.lang.reflect.Field;
-import java.util.Arrays;
-
 import com.artemis.EntitySystem;
 import com.artemis.SystemManager;
 import com.artemis.World;
@@ -13,9 +10,7 @@ import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import com.gemserk.games.magick.libgdx.Game;
 import com.gemserk.games.magick.libgdx.Screen;
@@ -24,9 +19,7 @@ import com.gemserk.games.magick.systems.CleanupSystem;
 import com.gemserk.games.magick.systems.DashSystem;
 import com.gemserk.games.magick.systems.DeadDetectionSystem;
 import com.gemserk.games.magick.systems.GenerateLevelSystem;
-import com.gemserk.games.magick.systems.InputSystem;
 import com.gemserk.games.magick.systems.JumpSystem;
-import com.gemserk.games.magick.systems.PhysicsCloudSystem;
 import com.gemserk.games.magick.systems.PhysicsSystem;
 import com.gemserk.games.magick.systems.PhysicsTransformationSystem;
 import com.gemserk.games.magick.systems.RunningSystem;
@@ -34,6 +27,7 @@ import com.gemserk.games.magick.systems.ScoreRenderSystem;
 import com.gemserk.games.magick.systems.ScoreSystem;
 import com.gemserk.games.magick.systems.SpriteRenderSystem;
 import com.gemserk.games.magick.systems.SpriteUpdateSystem;
+import com.gemserk.games.magick.utils.IntegerHistogram;
 
 public class MagickGameScreen implements Screen {
 
@@ -117,34 +111,6 @@ public class MagickGameScreen implements Screen {
 	}
 
 	int frames = 0;
-
-	class IntegerHistogram {
-		int[] values;
-
-		public IntegerHistogram() {
-			this(100);
-		}
-
-		public IntegerHistogram(int initialValue) {
-			values = new int[initialValue];
-		}
-
-		public void add(int value) {
-			if (value >= values.length) {
-				values = Arrays.copyOf(values, MathUtils.nextPowerOfTwo(value + 1));
-				System.out.println("Creciendo: " + values.length);
-			}
-			values[value] = values[value] + 1;
-		}
-
-		public void print() {
-			for (int i = 0; i < values.length; i++) {
-				int value = values[i];
-				if (value != 0)
-					System.out.println(i + ":= " + value);
-			}
-		}
-	}
 
 	IntegerHistogram histogram = new IntegerHistogram();
 	int timeAfterDeath = 2000;
