@@ -103,5 +103,10 @@
 			<artifactId>gdx-backend-android</artifactId>
 			<version>${libgdxversion}</version>
 		</dependency>
+		<dependency>
+			<groupId>com.adwhirl.adwhirl</groupId>
+			<artifactId>adwhirl</artifactId>
+			<version>3.0.0</version>
+		</dependency>
 	</dependencies>
 </project>
